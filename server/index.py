@@ -1,7 +1,11 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+import psycopg2
+
 hostName = "localhost"
 serverPort = 8080
+
+# ---------- CONNECT TO SERVER ----------
 
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
@@ -34,6 +38,41 @@ webServer = HTTPServer((hostName, serverPort), SimpleHTTPRequestHandler)
 
 print("Server started at http://%s:%s" % (hostName, serverPort))
 
+
+# ---------- CONNECT TO DATABASE ----------
+
+# Define our connection string
+conn_string = (
+    "host='localhost' dbname='project-connect' user='USERNAME' password='PASSWORD'"
+)
+
+# print the connection string we will use to connect
+print("Connecting to database\n	->%s" % (conn_string))
+
+# get a connection, if a connect cannot be made an exception will be raised here
+conn = psycopg2.connect(conn_string)
+
+# conn.cursor will return a cursor object, you can use this cursor to perform queries
+cursor = conn.cursor()
+print("Connected!\n")
+
+# ---------- CREATE A DATABASE TABLE ----------
+
+# Open a cursor to perform database operations
+cur = conn.cursor()
+# Execute a command: create datacamp_courses table
+cur.execute(
+    """CREATE TABLE test_table(
+            test_id SERIAL PRIMARY KEY);
+            """
+)
+# Make the changes to the database persistent
+conn.commit()
+# Close cursor and communication with the database
+cur.close()
+
+# ---------- RUN/STOP SERVER ----------
+
 # Continuously look for server requests
 try:
     webServer.serve_forever()
@@ -42,9 +81,5 @@ except KeyboardInterrupt:
     pass
 
 webServer.server_close()
+conn.close()
 print("Server stopped.")
-
-
-# RESOURCES:
-# https://pythonbasics.org/webserver/
-# https://anshu-dev.medium.com/creating-a-python-web-server-from-basic-to-advanced-449fcb38e93b
