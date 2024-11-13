@@ -43,7 +43,7 @@ print("Server started at http://%s:%s" % (hostName, serverPort))
 
 # Define our connection string
 conn_string = (
-    "host='localhost' dbname='project-connect' user='USERNAME' password='PASSWORD'"
+    "host='localhost' dbname='project-connect' user='nidhidesu' password='#NDpg3703'"
 )
 
 # print the connection string we will use to connect
