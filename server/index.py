@@ -1,9 +1,20 @@
+import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import psycopg2
 
+# Let Python view files in our parent directory (i.e. 'server') so we can access 'server/db/models'
+sys.path.append("..")
+
+# Import database tables
+from db.models import test_table
+
+# Local variables
+
 hostName = "localhost"
 serverPort = 8080
+DB_USERNAME = "USERNAME"
+DB_PASSWORD = "PASSWORD"
 
 # ---------- CONNECT TO SERVER ----------
 
@@ -38,38 +49,25 @@ webServer = HTTPServer((hostName, serverPort), SimpleHTTPRequestHandler)
 
 print("Server started at http://%s:%s" % (hostName, serverPort))
 
-
 # ---------- CONNECT TO DATABASE ----------
 
 # Define our connection string
-conn_string = (
-    "host='localhost' dbname='project-connect' user='nidhidesu' password='#NDpg3703'"
+
+conn_string = "host='localhost' dbname='project-connect' user=%s password=%s" % (
+    DB_USERNAME,
+    DB_PASSWORD,
 )
 
-# print the connection string we will use to connect
-print("Connecting to database\n	->%s" % (conn_string))
+print("Connecting to database...\n")
 
-# get a connection, if a connect cannot be made an exception will be raised here
+# Get a connection, if a connect cannot be made an exception will be raised here
 conn = psycopg2.connect(conn_string)
 
-# conn.cursor will return a cursor object, you can use this cursor to perform queries
-cursor = conn.cursor()
 print("Connected!\n")
 
-# ---------- CREATE A DATABASE TABLE ----------
+# ---------- CREATE TABLES (if they don't exist) ----------
 
-# Open a cursor to perform database operations
-cur = conn.cursor()
-# Execute a command: create datacamp_courses table
-cur.execute(
-    """CREATE TABLE test_table(
-            test_id SERIAL PRIMARY KEY);
-            """
-)
-# Make the changes to the database persistent
-conn.commit()
-# Close cursor and communication with the database
-cur.close()
+test_table.create_test_table(conn)
 
 # ---------- RUN/STOP SERVER ----------
 

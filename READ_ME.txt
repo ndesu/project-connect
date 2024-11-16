@@ -6,8 +6,8 @@ Create the Database:
 2. Download PgAdmin and PostgreSQL and follow set-up steps.
 3. Make sure server is running in PostgreSQL.
 3. In PgAdmin, create a new database called 'project-connect'.
-4. In server/index.py, in conn_string function, replace "USERNAME" and "PASSWORD" with your PgAdmin username and password.
-5. Make sure to remove your username and password from this before pushing to github.
+4. In server/index.py, at top of file, replace value of "DB_USERNAME" and "DB_PASSWORD" with your PgAdmin username and password.
+5. Make sure to remove your PgAdmin username and password from this file before pushing to github.
 
 To Run Server:
 npm run start
