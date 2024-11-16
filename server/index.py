@@ -52,6 +52,7 @@ print("Server started at http://%s:%s" % (hostName, serverPort))
 # ---------- CONNECT TO DATABASE ----------
 
 # Define our connection string
+
 conn_string = "host='localhost' dbname='project-connect' user=%s password=%s" % (
     DB_USERNAME,
     DB_PASSWORD,
