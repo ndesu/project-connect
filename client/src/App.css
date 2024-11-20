@@ -53,6 +53,41 @@ h1 {
     padding: 20px;
     margin: 30px;
     display: flex;
-    height: 400px;
+    flex-direction: column;
+    /* height: 400px; */
+    align-items: center;
+    justify-content: center;
+}
+
+.formFields {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin: 10px;
+}
+
+.formFields input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.formFields label {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.formFields button {
+    margin: 20px 0;
+    width: 30%;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #B9B9B9;
 }
 

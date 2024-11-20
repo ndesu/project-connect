@@ -13,8 +13,8 @@ from db.models import test_table
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "USERNAME"
-DB_PASSWORD = "PASSWORD"
+DB_USERNAME = "nidhidesu"
+DB_PASSWORD = "#NDpc3703"
 
 # ---------- CONNECT TO SERVER ----------
 
