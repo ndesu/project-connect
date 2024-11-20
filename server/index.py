@@ -13,8 +13,8 @@ from db.models import test_table
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "USERNAME"
-DB_PASSWORD = "PASSWORD"
+DB_USERNAME = "nidhidesu"
+DB_PASSWORD = "#NDpc3703"
 
 # ---------- CONNECT TO SERVER ----------
 
@@ -22,8 +22,8 @@ DB_PASSWORD = "PASSWORD"
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         # If path received is '/', change to default path '/index.html'
-        if self.path == "/":
-            self.path = "../public/index.html"
+        if self.path == "/" or self.path == "/home" or self.path == "/events" or self.path == "/map" or self.path == "/profile":
+            self.path = "../client/public/index.html"
 
         # Try to open the requested file
         try:

@@ -10,6 +10,10 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.css$/, // Match CSS files
+                use: ["style-loader", "css-loader"], // Use style-loader and css-loader
+            },
+            {
                 test: /\.js$/,
                 include: [
                     path.resolve(__dirname, 'client')
