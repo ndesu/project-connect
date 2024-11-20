@@ -1,5 +1,11 @@
 body {
+    align-items: center;
+    /* border: 2px solid black; */
+    display: flex;
+    justify-content: center;
     margin: 0;
+    height: 100%;
+    width: 100%;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
 }
@@ -7,3 +13,46 @@ body {
 h1 {
     color: #333;
 }
+
+.loginContainer {
+    align-items: center;
+    /* border: 2px solid black; */
+    display: flex;
+    flex-direction: column;
+    min-width: 1000px;
+}
+
+.appTitle {
+    text-align: center;
+    font-size: 64px;
+    font-style: italic;
+}
+
+.signInToggle {
+    display: flex;
+}
+
+.signInToggle button {
+    width: 250px;
+    background-color: #D9D9D9;
+    border: none;
+    border-radius: 30px;
+    margin: 10px 40px;
+    padding: 10px;
+    font-size: 24px;
+}
+
+.signInToggle p {
+    font-size: 24px;
+}
+
+.inputBox {
+    width: 500px;
+    border: 2px solid black;
+    border-radius: 30px;
+    padding: 20px;
+    margin: 30px;
+    display: flex;
+    height: 400px;
+}
+
