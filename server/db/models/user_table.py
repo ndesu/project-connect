@@ -10,7 +10,7 @@ def create_new_user(conn, userID, fullName, email, password, location):
     cur = conn.cursor()
 
     #check username
-    cur.execute("SELECT * FROM User WHERE UserID = ? OR Email = ?", (userID, email))
+    cur.execute("SELECT * FROM user_table WHERE user_id = %s OR email = %s", (userID, email))
     existing_user = cur.fetchone()
 
     if existing_user:
@@ -18,10 +18,23 @@ def create_new_user(conn, userID, fullName, email, password, location):
         return False
 
     cur.execute(
-        """INSERT INTO User (UserID, FullName, Email, Password, LocatedAt, RSVPs) VALUES
-        (?, ?, ?, ?, ?, ?)""",
+        """INSERT INTO user_table (user_id, full_name, email, password_hash, located_at, rsvps) VALUES
+        (%s, %s, %s, %s, %s, %s)""",
         (userID, fullName, email, password, location, rsvps)
     )
 
     conn.commit()
     cur.close()
+
+def user_login(conn, userID, password):
+    password = hashlib.sha256(password.encode()).hexdigest()
+    cur = conn.cursor()
+
+    cur.execute(
+        """SELECT password_hash FROM user_table WHERE user_id = %s""", userID
+    )
+    password_hash = cur.fetchone()
+    if password == password_hash:
+        return True
+
+    return False

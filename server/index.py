@@ -1,5 +1,6 @@
 import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import json
 
 import psycopg2
 
@@ -7,7 +8,7 @@ import psycopg2
 sys.path.append("..")
 
 # Import database tables
-from db.models import test_table
+from db.models import test_table, user_table
 
 # Local variables
 
@@ -18,11 +19,10 @@ DB_PASSWORD = "PASSWORD"
 
 # ---------- CONNECT TO SERVER ----------
 
-
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         # If path received is '/', change to default path '/index.html'
-        if self.path == "/" or self.path == "/home" or self.path == "/events" or self.path == "/map" or self.path == "/profile":
+        if self.path in ["/", "/home", "/events", "/map", "/profile"]:
             self.path = "../client/public/index.html"
 
         # Try to open the requested file
@@ -34,6 +34,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             # set body to file content
             self.wfile.write(bytes(file_to_open, "utf-8"))
+            
         # If file is not found, return 404 error
         except:
             # set response code
@@ -42,6 +43,32 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             # set body to error message
             self.wfile.write(b"404 - Not Found")
+    
+    def do_POST(self):
+        content_length = int(self.headers["Content-Length"])
+        post_data = self.rfile.read(content_length)
+
+        try:
+            data = json.loads(post_data)
+            print("Received data:", data)
+
+            # Respond to the React frontend
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            response = {"message": "Data received successfully!"}
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+            if data['type'] == "createAccount":
+                user_table.create_new_user(conn, data['username'], data['fullName'], data['email'], data['password'], data['city'] + ', ' + data['state'])
+                    
+
+        except json.JSONDecodeError:
+            self.send_response(400)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            response = {"error": "Invalid JSON"}
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
 
 
 # Create web server
