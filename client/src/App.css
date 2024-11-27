@@ -28,11 +28,11 @@ h1 {
     font-style: italic;
 }
 
-.signInToggle {
+.accTypeToggle {
     display: flex;
 }
 
-.signInToggle button {
+.accTypeToggle button {
     width: 250px;
     background-color: #D9D9D9;
     border: none;
@@ -40,9 +40,10 @@ h1 {
     margin: 10px 40px;
     padding: 10px;
     font-size: 24px;
+    cursor: pointer;
 }
 
-.signInToggle p {
+.accTypeToggle p {
     font-size: 24px;
 }
 
@@ -89,5 +90,16 @@ h1 {
     border-radius: 5px;
     padding: 5px;
     background-color: #B9B9B9;
+}
+
+.login-toggle {
+    text-decoration: underline;
+    color: green;
+    cursor: pointer;
+}
+
+.button-wrapper button {
+    width: 150px;
+    cursor: pointer;
 }
 

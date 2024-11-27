@@ -52,15 +52,22 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             data = json.loads(post_data)
             print("Received data:", data)
 
-            if data['type'] == "createAccount":
-                user_table.create_new_user(conn, data['username'], data['fullName'], data['email'], data['password'], data['city'] + ', ' + data['state'])
+            if data['type'] == "createUserAccount":
+                user_table.create_new_user(conn, data['email'], data['password'], data['fullName'], data['city'] + ', ' + data['state'])
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                response = {"message": "Data received successfully!", "status": "success"}
+                self.wfile.write(bytes(json.dumps(response), "utf-8"))
+            elif data['type'] == "createOrgAccount":
+                user_table.create_new_org(conn, data['email'], data['password'], data['orgName'], data['description'], data['phoneNumber'], data['city'] + ', ' + data['state'])
                 self.send_response(200)
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
                 response = {"message": "Data received successfully!", "status": "success"}
                 self.wfile.write(bytes(json.dumps(response), "utf-8"))
             elif data['type'] == "login":
-                if user_table.user_login(conn, data['username'], data['password']):
+                if user_table.user_login(conn, data['email'], data['password']):
                     self.send_response(200)
                     self.send_header("Content-type", "application/json")
                     self.end_headers()
