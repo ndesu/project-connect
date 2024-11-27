@@ -14,8 +14,8 @@ from db.models import test_table, user_table
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "nidhidesu"
-DB_PASSWORD = "#NDpc3703"
+DB_USERNAME = "USERNAME"
+DB_PASSWORD = "PASSWORD"
 
 # ---------- CONNECT TO SERVER ----------
 
