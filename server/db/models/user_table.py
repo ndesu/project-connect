@@ -31,10 +31,10 @@ def user_login(conn, userID, password):
     cur = conn.cursor()
 
     cur.execute(
-        """SELECT password_hash FROM user_table WHERE user_id = %s""", userID
+        """SELECT * FROM user_table WHERE user_id = %s and password_hash=%s""", (userID, password)
     )
-    password_hash = cur.fetchone()
-    if password == password_hash:
+    existing_user = cur.fetchone()
+    if existing_user:
         return True
-
-    return False
+    else:
+        return False

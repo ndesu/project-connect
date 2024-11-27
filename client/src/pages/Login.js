@@ -41,7 +41,7 @@ export default function Login() {
     const handleLoginSubmit = (e) => {
         e.preventDefault();
         fetch("http://localhost:8080", {
-            method: "GET",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -54,8 +54,9 @@ export default function Login() {
                     username: "",
                     password: "",
                 });
-                if (data.success) {
+                if (data.status === "success") {
                     navigate('/home')
+                    console.log("working here")
                 } else {
                     alert("Login Failed!")
                 }
@@ -86,7 +87,7 @@ export default function Login() {
                     city: "",
                     state: "",
                 });
-                if (data.success) {
+                if (data.status === "success") {
                     navigate('/home')
                 } else {
                     alert("Create Account Failed")

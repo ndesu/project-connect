@@ -14,8 +14,8 @@ from db.models import test_table, user_table
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "USERNAME"
-DB_PASSWORD = "PASSWORD"
+DB_USERNAME = "nidhidesu"
+DB_PASSWORD = "#NDpc3703"
 
 # ---------- CONNECT TO SERVER ----------
 
@@ -52,16 +52,24 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             data = json.loads(post_data)
             print("Received data:", data)
 
-            # Respond to the React frontend
-            self.send_response(200)
-            self.send_header("Content-type", "application/json")
-            self.end_headers()
-            response = {"message": "Data received successfully!"}
-            self.wfile.write(bytes(json.dumps(response), "utf-8"))
-
             if data['type'] == "createAccount":
                 user_table.create_new_user(conn, data['username'], data['fullName'], data['email'], data['password'], data['city'] + ', ' + data['state'])
-                    
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                response = {"message": "Data received successfully!", "status": "success"}
+                self.wfile.write(bytes(json.dumps(response), "utf-8"))
+            elif data['type'] == "login":
+                if user_table.user_login(conn, data['username'], data['password']):
+                    self.send_response(200)
+                    self.send_header("Content-type", "application/json")
+                    self.end_headers()
+                    self.wfile.write(b'{"message": "Login successful", "status": "success"}')
+                else:
+                    self.send_response(401)
+                    self.send_header("Content-type", "application/json")
+                    self.end_headers()
+                    self.wfile.write(b'{"error": "Invalid credentials", "status": "failure"}')
 
         except json.JSONDecodeError:
             self.send_response(400)
