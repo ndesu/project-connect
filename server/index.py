@@ -4,11 +4,13 @@ import json
 
 import psycopg2
 
+from db.models import create_and_seed
+
 # Let Python view files in our parent directory (i.e. 'server') so we can access 'server/db/models'
 sys.path.append("..")
 
 # Import database tables
-from db.models import test_table, user_table
+from db.models import user_table
 
 # Local variables
 
@@ -109,7 +111,7 @@ print("Connected!\n")
 
 # ---------- CREATE TABLES (if they don't exist) ----------
 
-test_table.create_test_table(conn)
+create_and_seed.create_tables(conn)
 
 # ---------- RUN/STOP SERVER ----------
 
