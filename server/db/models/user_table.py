@@ -41,7 +41,7 @@ def create_new_org(conn, email, password, orgName, description, phoneNumber, loc
         return False
     
     cur.execute(
-        """INSERT INTO organization_table (OrganizationName, OrgDescription, Email, PhoneNumber, PasswordHash, LocatedAt, TotalEvents) VALUES
+        """INSERT INTO organizations (OrganizationName, OrgDescription, Email, PhoneNumber, PasswordHash, LocatedAt, TotalEvents) VALUES
         (%s, %s, %s, %s, %s, %s, %s)""",
         (orgName, description, email, phoneNumber, password, location, numEvents)
     )
@@ -64,7 +64,7 @@ def user_login(conn, email, password):
             """SELECT * FROM organizations WHERE Email = %s and PasswordHash = %s""", (email, password)
         )
         existing_org = cur.fetchone()
-        
+
         if existing_org:
             return True
         else:

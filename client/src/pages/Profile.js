@@ -1,7 +1,19 @@
 import React from "react";
+import { useLocation  } from "react-router-dom";
+import Header from "../components/Header";
 
 export default function Profile() {
+    const location = useLocation();
+    const email = location.state?.email
+
     return (
-        <h1>This is the Profile Page</h1>
+        <div>
+            <Header email={email} />
+            <h1>This is the Profile Page</h1>
+            {email ? <p>Welcome {email}!</p> : 
+            <p>You are not logged in</p>
+            }
+        </div>
+        
     )
 }
