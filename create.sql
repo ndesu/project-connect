@@ -1,6 +1,6 @@
 -- Project Connect Create File
 
-CREATE TABLE User (
+CREATE TABLE Users (
     UserID INT PRIMARY KEY,
     FullName VARCHAR(50),
     Email VARCHAR(50) UNIQUE,
@@ -43,8 +43,8 @@ CREATE TABLE Post (
     PostID INT PRIMARY KEY,
     UserID INT,
     Image VARCHAR(50),
-    TimeOfPost DATETIME,
-    FOREIGN KEY (UserID) REFERENCES User(UserID)
+    TimeOfPost TIMESTAMP,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
 CREATE TABLE Comment (
@@ -52,9 +52,9 @@ CREATE TABLE Comment (
     PostID INT,
     UserID INT,
     PostedComment VARCHAR(250),
-    TimeCommentedAt DATETIME,
+    TimeCommentedAt TIMESTAMP,
     FOREIGN KEY (PostID) REFERENCES Post(PostID),
-    FOREIGN KEY (UserID) REFERENCES User(UserID)
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
 CREATE TABLE SupplyRequest (
@@ -74,7 +74,7 @@ CREATE TABLE FulfillRequest (
     QuantityFulfilled INT,
     DateFulfilled DATE,
     FOREIGN KEY (RequestID) REFERENCES SupplyRequest(RequestID),
-    FOREIGN KEY (UserID) REFERENCES User(UserID)
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
 CREATE TABLE RSVP (
@@ -82,6 +82,6 @@ CREATE TABLE RSVP (
     UserID INT,
     EventID INT,
     Status VARCHAR(50),
-    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
     FOREIGN KEY (EventID) REFERENCES Event(EventID)
 );
