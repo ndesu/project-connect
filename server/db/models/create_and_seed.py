@@ -5,6 +5,7 @@ import psycopg2
 
 def create_tables(conn):
     print("Creating tables...")
+    print("Creating tables...")
     # Open a cursor to perform database operations
     cur = conn.cursor()
     # Execute a command: create datacamp_courses table
