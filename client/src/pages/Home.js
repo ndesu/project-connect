@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../components/Header";
 
@@ -8,13 +8,43 @@ export default function Home() {
 
     email ? console.log(email) : console.log("no email :(")
 
+    const [allPosts, setAllPosts] = useState([])
+
+    const get_post_data = async () => {
+        try {
+            const response = await fetch("http://localhost:8080/get_all_posts")
+
+            const all_posts_data = await response.json();
+            console.log("all_posts_data: ", all_posts_data, "\n\nType of: ", typeof (all_posts_data))
+            setAllPosts(all_posts_data)
+
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    // Anything in the useEffect function will ONLY be called when the component is first loaded (otherwise it will continuously call get_post_data())
+    useEffect(() => {
+        get_post_data()
+    }, [])
+
     return (
         <div class="page">
             <Header email={email} />
             <h1>This is the Home Page</h1>
-            {email ? <p>Welcome {email}!</p> : 
-            <p>You are not logged in</p>
+
+            {email ? <p>Welcome {email}!</p> :
+                <p>You are not logged in</p>
             }
+
+            <div>{allPosts.map((post, i) => {
+                return (
+                    <div key={i}>
+                        <div>{post[2]}</div>
+                        <div>{post[3]}</div>
+                    </div>
+                )
+            })}</div>
         </div>
     )
 }
