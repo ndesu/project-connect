@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../components/Header";
 
@@ -12,21 +12,21 @@ export default function Home() {
 
     const get_post_data = async () => {
         try {
-            const response = await fetch("http://localhost:8080/get_data")
-            // if (!response.ok) {
-            //     throw new Error(`Response status: ${response.status}`);
-            // }
+            const response = await fetch("http://localhost:8080/get_all_posts")
 
             const all_posts_data = await response.json();
+            console.log("all_posts_data: ", all_posts_data, "\n\nType of: ", typeof (all_posts_data))
             setAllPosts(all_posts_data)
-            // console.log("Type: ", typeof (all_posts_data))
 
         } catch (error) {
             console.log(error.message);
         }
     }
 
-    get_post_data()
+    // Anything in the useEffect function will ONLY be called when the component is first loaded (otherwise it will continuously call get_post_data())
+    useEffect(() => {
+        get_post_data()
+    }, [])
 
     return (
         <div class="page">
@@ -40,7 +40,8 @@ export default function Home() {
             <div>{allPosts.map((post, i) => {
                 return (
                     <div key={i}>
-                        <div>{post}</div>
+                        <div>{post[2]}</div>
+                        <div>{post[3]}</div>
                     </div>
                 )
             })}</div>

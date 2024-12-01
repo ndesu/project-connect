@@ -10,22 +10,21 @@ from db.models import create_and_seed
 sys.path.append("..")
 
 # Import database tables
-from db.models import post_table, test_table, user_table
+from db.models import post_table, user_table
 
 # Local variables
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "USERNAME"
-DB_PASSWORD = "PASSWORD"
+DB_USERNAME = "adriaorenstein"
+DB_PASSWORD = "pg-adria"
 
 # ---------- CONNECT TO SERVER ----------
 
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path == "/get_data":
-            print("\n\nGot Data!\n\n")
+        if self.path == "/get_all_posts":
             response = post_table.get_all_posts(conn)
 
             self.send_response(200)
