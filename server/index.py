@@ -10,7 +10,7 @@ from db.models import create_and_seed
 sys.path.append("..")
 
 # Import database tables
-from db.models import user_table
+from db.models import user_table, maps_table
 
 # Local variables
 
@@ -23,8 +23,27 @@ DB_PASSWORD = "PASSWORD"
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
+        if self.path == "/map":
+            locations = maps_table.get_map_locations(conn)
+            print(locations)
+            try:
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                response = locations
+                self.wfile.write(bytes(json.dumps(response, default=str), "utf-8"))
+            except Exception as e:
+                print('Error: ', e)
+                # set response code
+                self.send_response(404)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                # set body to error message
+                self.wfile.write(b"404 - Not Found")
+            
+            self.path = "../client/public/index.html"
         # If path received is '/', change to default path '/index.html'
-        if self.path in ["/", "/home", "/events", "/map", "/profile"]:
+        elif self.path in ["/", "/home", "/events", "/map", "/profile"]:
             self.path = "../client/public/index.html"
 
         # Try to open the requested file
@@ -45,6 +64,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             # set body to error message
             self.wfile.write(b"404 - Not Found")
+        
     
     def do_POST(self):
         content_length = int(self.headers["Content-Length"])
