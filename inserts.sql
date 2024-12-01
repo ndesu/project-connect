@@ -1,6 +1,6 @@
 -- Project Connect Insert files
 
-INSERT INTO User (UserID, FullName, Email, Password, LocatedAt, RSVPs) VALUES  
+INSERT INTO Users (UserID, FullName, Email, Password, LocatedAt, RSVPs) VALUES  
     (1, 'Nidhi Desu', 'nidhidesu@gmail.com', 'password123', 'New York', 0),
     (2, 'Xena Maldonado', 'xenamaldonado@gmail.com', 'password456', 'Los Angeles', 0),
     (3, 'Adria Orenstein', 'adriaorenstein@gmail.com', 'password789', 'Chicago', 0);
