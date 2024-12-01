@@ -1,6 +1,6 @@
+import json
 import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import json
 
 import psycopg2
 
@@ -10,7 +10,7 @@ from db.models import create_and_seed
 sys.path.append("..")
 
 # Import database tables
-from db.models import user_table
+from db.models import post_table, user_table
 
 # Local variables
 
@@ -21,31 +21,39 @@ DB_PASSWORD = "PASSWORD"
 
 # ---------- CONNECT TO SERVER ----------
 
+
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        # If path received is '/', change to default path '/index.html'
-        if self.path in ["/", "/home", "/events", "/map", "/profile"]:
-            self.path = "../client/public/index.html"
+        if self.path == "/get_all_posts":
+            response = post_table.get_all_posts(conn)
 
-        # Try to open the requested file
-        try:
-            file_to_open = open(self.path[1:]).read()
-            # set response code
             self.send_response(200)
-            self.send_header("Content-type", "text/html")
+            self.send_header("Content-type", "application/json")
             self.end_headers()
-            # set body to file content
-            self.wfile.write(bytes(file_to_open, "utf-8"))
-            
-        # If file is not found, return 404 error
-        except:
-            # set response code
-            self.send_response(404)
-            self.send_header("Content-type", "text/html")
-            self.end_headers()
-            # set body to error message
-            self.wfile.write(b"404 - Not Found")
-    
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+        else:
+            # If path received is '/', change to default path '/index.html'
+            if self.path in ["/", "/home", "/events", "/map", "/profile"]:
+                self.path = "../client/public/index.html"
+            try:
+                file_to_open = open(self.path[1:]).read()
+                # set response code
+                self.send_response(200)
+                self.send_header("Content-type", "text/html")
+                self.end_headers()
+                # set body to file content
+                self.wfile.write(bytes(file_to_open, "utf-8"))
+
+            # If file is not found, return 404 error
+            except:
+                # set response code
+                self.send_response(404)
+                self.send_header("Content-type", "text/html")
+                self.end_headers()
+                # set body to error message
+                self.wfile.write(b"404 - Not Found")
+
     def do_POST(self):
         content_length = int(self.headers["Content-Length"])
         post_data = self.rfile.read(content_length)
@@ -54,31 +62,55 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             data = json.loads(post_data)
             print("Received data:", data)
 
-            if data['type'] == "createUserAccount":
-                user_table.create_new_user(conn, data['email'], data['password'], data['fullName'], data['city'] + ', ' + data['state'])
+            if data["type"] == "createUserAccount":
+                user_table.create_new_user(
+                    conn,
+                    data["email"],
+                    data["password"],
+                    data["fullName"],
+                    data["city"] + ", " + data["state"],
+                )
                 self.send_response(200)
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
-                response = {"message": "Data received successfully!", "status": "success"}
+                response = {
+                    "message": "Data received successfully!",
+                    "status": "success",
+                }
                 self.wfile.write(bytes(json.dumps(response), "utf-8"))
-            elif data['type'] == "createOrgAccount":
-                user_table.create_new_org(conn, data['email'], data['password'], data['orgName'], data['description'], data['phoneNumber'], data['city'] + ', ' + data['state'])
+            elif data["type"] == "createOrgAccount":
+                user_table.create_new_org(
+                    conn,
+                    data["email"],
+                    data["password"],
+                    data["orgName"],
+                    data["description"],
+                    data["phoneNumber"],
+                    data["city"] + ", " + data["state"],
+                )
                 self.send_response(200)
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
-                response = {"message": "Data received successfully!", "status": "success"}
+                response = {
+                    "message": "Data received successfully!",
+                    "status": "success",
+                }
                 self.wfile.write(bytes(json.dumps(response), "utf-8"))
-            elif data['type'] == "login":
-                if user_table.user_login(conn, data['email'], data['password']):
+            elif data["type"] == "login":
+                if user_table.user_login(conn, data["email"], data["password"]):
                     self.send_response(200)
                     self.send_header("Content-type", "application/json")
                     self.end_headers()
-                    self.wfile.write(b'{"message": "Login successful", "status": "success"}')
+                    self.wfile.write(
+                        b'{"message": "Login successful", "status": "success"}'
+                    )
                 else:
                     self.send_response(401)
                     self.send_header("Content-type", "application/json")
                     self.end_headers()
-                    self.wfile.write(b'{"error": "Invalid credentials", "status": "failure"}')
+                    self.wfile.write(
+                        b'{"error": "Invalid credentials", "status": "failure"}'
+                    )
 
         except json.JSONDecodeError:
             self.send_response(400)
