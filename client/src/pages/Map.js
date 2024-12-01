@@ -9,7 +9,7 @@ export default function MapPage() {
 
     email ? console.log(email) : console.log("no email :(")
 
-    const apiKey = 'x'
+    const apiKey = ''
 
     const mapLocations = () => {
         fetch("http://localhost:8080/map", {

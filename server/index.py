@@ -31,7 +31,24 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
-
+        elif self.path == "/map":
+            locations = maps_table.get_map_locations(conn)
+            print(locations)
+            try:
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                response = locations
+                self.wfile.write(bytes(json.dumps(response), "utf-8"))
+            except Exception as e:
+                print('Error: ', e)
+                # set response code
+                self.send_response(404)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                # set body to error message
+                self.wfile.write(b"404 - Not Found")
+            self.path = "../client/public/index.html"
         else:
             # If path received is '/', change to default path '/index.html'
             if self.path in ["/", "/home", "/events", "/map", "/profile"]:
