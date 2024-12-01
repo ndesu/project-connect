@@ -10,7 +10,7 @@ from db.models import create_and_seed
 sys.path.append("..")
 
 # Import database tables
-from db.models import post_table, test_table, user_table
+from db.models import post_table, user_table
 
 # Local variables
 
@@ -24,8 +24,7 @@ DB_PASSWORD = "PASSWORD"
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path == "/get_data":
-            print("\n\nGot Data!\n\n")
+        if self.path == "/get_all_posts":
             response = post_table.get_all_posts(conn)
 
             self.send_response(200)

@@ -17,9 +17,9 @@ INSERT INTO MapLocation (Longitude, Latitude, OrgAddress) VALUES
     (-122.33, 47.61, '123 Main St, Seattle, WA'),
     (-97.74, 30.26, '456 Elm St, Austin, TX');
 
-INSERT INTO Posts (UserID, PostImage, TimeOfPost) VALUES
-    (1, 'food.jpg', '2024-11-03 14:30:00'),
-    (2, 'help.jpg', '2024-11-04 09:45:00');
+INSERT INTO Posts (UserID, PostImage, TimeOfPost, PostText) VALUES
+    (1, 'food.jpg', '2024-11-03 14:30:00', 'Check out this food!'),
+    (2, 'help.jpg', '2024-11-04 09:45:00', 'We are in need of some help.');
 
 INSERT INTO Comments (PostID, UserID, PostedComment, TimeCommentedAt) VALUES
     (1, 2, 'hello', '2024-11-01 15:00:00'),

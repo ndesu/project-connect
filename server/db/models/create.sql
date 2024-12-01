@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS Posts (
     UserID INT,
     PostImage VARCHAR(50),
     TimeOfPost TIMESTAMP,
+    PostText VARCHAR(500),
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 

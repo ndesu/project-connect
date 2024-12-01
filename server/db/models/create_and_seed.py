@@ -4,21 +4,32 @@ import psycopg2
 
 
 def create_tables(conn):
+    print("Creating tables...")
     # Open a cursor to perform database operations
     cur = conn.cursor()
     # Execute a command: create datacamp_courses table
-    cur.execute(
-        open("server/db/models/create.sql", "r").read()
-        # """CREATE TABLE IF NOT EXISTS test_table(
-        #         test_id SERIAL PRIMARY KEY);
-        #         """
-    )
+
+    # ------ DELETE ALL TABLES ------
+
+    # try:
+    #     cur.execute(open("server/db/models/delete.sql", "r").read())
+    # except Exception as e:
+    #     print("\n\nERROR DELETING TABLES: ", e)
+
+    # ------ CREATE ALL TABLES ------
 
     try:
-        cur.execute(
-            open("server/db/models/inserts.sql", "r").read()
-        )
-    except:
+        cur.execute(open("server/db/models/create.sql", "r").read())
+    except Exception as e:
+        print("\n\nERROR CREATING TABLES: ", e)
+        pass
+
+    # ------ INSERT SEED DATA INTO TABLES ------
+
+    try:
+        cur.execute(open("server/db/models/inserts.sql", "r").read())
+    except Exception as e:
+        print("\n\nERROR EXECUTING INSERTS: ", e)
         pass
 
     # Make the changes to the database persistent
