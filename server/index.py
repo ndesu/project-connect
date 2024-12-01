@@ -4,6 +4,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import psycopg2
 
+from db.models import create_and_seed
+
 # Let Python view files in our parent directory (i.e. 'server') so we can access 'server/db/models'
 sys.path.append("..")
 
@@ -14,16 +16,14 @@ from db.models import post_table, test_table, user_table
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "adriaorenstein"
-DB_PASSWORD = "pg-adria"
+DB_USERNAME = "USERNAME"
+DB_PASSWORD = "PASSWORD"
 
 # ---------- CONNECT TO SERVER ----------
 
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        # print("\n\nGET REQ: ", vars(self), "\n\n")
-        # Try to open the requested file
         if self.path == "/get_data":
             print("\n\nGot Data!\n\n")
             response = post_table.get_all_posts(conn)
@@ -144,10 +144,7 @@ print("Connected!\n")
 
 # ---------- CREATE TABLES (if they don't exist) ----------
 
-test_table.create_test_table(conn)
-post_table.create_post_table(conn)
-
-# post_table.insert_seed_data(conn)
+create_and_seed.create_tables(conn)
 
 # ---------- RUN/STOP SERVER ----------
 

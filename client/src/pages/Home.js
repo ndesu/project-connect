@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-
-
+import { useLocation } from "react-router-dom";
+import Header from "../components/Header";
 
 export default function Home() {
+    const location = useLocation();
+    const email = location.state?.email
+
+    email ? console.log(email) : console.log("no email :(")
+
     const [allPosts, setAllPosts] = useState([])
 
     const get_post_data = async () => {
@@ -22,9 +27,15 @@ export default function Home() {
     }
 
     get_post_data()
+
     return (
-        <div>
+        <div class="page">
+            <Header email={email} />
             <h1>This is the Home Page</h1>
+
+            {email ? <p>Welcome {email}!</p> :
+                <p>You are not logged in</p>
+            }
 
             <div>{allPosts.map((post, i) => {
                 return (

@@ -26,6 +26,17 @@ export default function Login() {
         email: "",
         password: ""
     });
+
+    function checkFields(dataObj) {
+        console.log(dataObj)
+        for (let key in dataObj) {
+            if(!dataObj.hasOwnProperty(key)) continue;
+            if(!dataObj[key]) {
+                return false
+            };
+        }
+        return true;
+    }
     
     const navigate = useNavigate();
     
@@ -59,96 +70,108 @@ export default function Login() {
 
     const handleLoginSubmit = (e) => {
         e.preventDefault();
-        fetch("http://localhost:8080", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ type: "login", ...loginData }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("Login response:", data);
-                setLoginData({
-                    email: "",
-                    password: "",
-                });
-                if (data.status === "success") {
-                    navigate('/home')
-                    console.log("working here")
-                } else {
-                    alert("Login Failed!")
-                }
+        if (!checkFields(loginData)) {
+            alert("Enter All Information Before Submitting")
+        } else {
+            fetch("http://localhost:8080", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ type: "login", ...loginData }),
             })
-            .catch((error) => {
-                console.error("Error during login:", error);
-            });
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Login response:", data);
+                    if (data.status === "success") {
+                        navigate('/home', { state: {email: loginData.email}})
+                    } else {
+                        alert("Login Failed!")
+                    }
+                    setLoginData({
+                        email: "",
+                        password: "",
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error during login:", error);
+                });
+        }
     };
 
     const handleCreateUserAccSubmit = (e) => {
         e.preventDefault();
-        // Send create account data to the server
-        fetch("http://localhost:8080", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ type: "createUserAccount", ...createUserAccData }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("Create account response:", data);
-                setCreateUserAccData({
-                    email: "",
-                    password: "",
-                    fullName: "",
-                    city: "",
-                    state: "",
-                });
-                if (data.status === "success") {
-                    navigate('/home')
-                } else {
-                    alert("Create Account Failed")
-                }
+        if (!checkFields(createUserAccData)) {
+            alert("Enter All Information Before Submitting")
+        } else {
+            // Send create account data to the server
+            fetch("http://localhost:8080", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ type: "createUserAccount", ...createUserAccData }),
             })
-            .catch((error) => {
-                console.error("Error during account creation:", error);
-            });
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Create account response:", data);
+                    if (data.status === "success") {
+                        navigate('/home', { state: {email: createUserAccData.email}})
+                    } else {
+                        alert("Create Account Failed")
+                    }
+                    setCreateUserAccData({
+                        email: "",
+                        password: "",
+                        fullName: "",
+                        city: "",
+                        state: "",
+                    });
+                    
+                })
+                .catch((error) => {
+                    console.error("Error during account creation:", error);
+                });
+        }
         
     };
 
     const handleCreateOrgAccSubmit = (e) => {
         e.preventDefault();
-        // Send create account data to the server
-        fetch("http://localhost:8080", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ type: "createOrgAccount", ...createOrgAccData }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("Create account response:", data);
-                setCreateOrgAccData({
-                    email: "",
-                    password: "",
-                    orgName: "",
-                    description: "",
-                    phoneNumber: "",
-                    city: "",
-                    state: "",
-                });
-                if (data.status === "success") {
-                    navigate('/home')
-                } else {
-                    alert("Create Account Failed")
-                }
+        if (!checkFields(createOrgAccData)) {
+            alert("Enter All Information Before Submitting")
+            // navigate('/')
+        } else {
+            // Send create account data to the server
+            fetch("http://localhost:8080", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ type: "createOrgAccount", ...createOrgAccData }),
             })
-            .catch((error) => {
-                console.error("Error during account creation:", error);
-            });
-        
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Create account response:", data);
+                    if (data.status === "success") {
+                        navigate('/home', { state: {email: createOrgAccData.email}})
+                    } else {
+                        alert("Create Account Failed")
+                    }
+                    setCreateOrgAccData({
+                        email: "",
+                        password: "",
+                        orgName: "",
+                        description: "",
+                        phoneNumber: "",
+                        city: "",
+                        state: "",
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error during account creation:", error);
+                });
+        }
     };
 
     return (
