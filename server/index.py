@@ -1,6 +1,7 @@
 import json
 import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from mimetypes import guess_type
 
 import psycopg2
 
@@ -24,6 +25,22 @@ DB_PASSWORD = "PASSWORD"
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
+        if self.path.startswith("/static/"):
+            static_file_path = self.path[1:]
+            try:
+                with open(static_file_path, "rb") as static_file:
+                    content = static_file.read()
+                content_type, _ = guess_type(static_file_path)
+                if not content_type:
+                    content_type = "application/octet-stream"
+                
+                self.send_response(200)
+                self.send_header("Content-type", content_type)
+                self.end_headers()
+                self.wfile.write(content)
+            except FileNotFoundError:
+                self.send_error(404, "File not found")
+            return
         if self.path == "/get_all_posts":
             response = post_table.get_all_posts(conn)
 

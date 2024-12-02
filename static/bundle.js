@@ -86,7 +86,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ MapPage)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router/dist/index.js\");\n/* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Header */ \"./client/src/components/Header.js\");\n/* harmony import */ var _vis_gl_react_google_maps__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @vis.gl/react-google-maps */ \"./node_modules/@vis.gl/react-google-maps/dist/index.modern.mjs\");\n\n\n\n\nfunction MapPage() {\n  const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useLocation)();\n  const email = location.state?.email;\n  const [markers, setMarkers] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);\n  const apiKey = '';\n  const mapLocations = () => {\n    fetch(\"http://localhost:8080/map\", {\n      method: \"GET\",\n      headers: {\n        \"Content-Type\": \"application/json\"\n      }\n    }).then(response => response.text()).then(rawText => {\n      const jsonEndIndex = rawText.indexOf(\"HTTP/1.0\");\n      const validJson = jsonEndIndex > 0 ? rawText.slice(0, jsonEndIndex).trim() : rawText.trim();\n      try {\n        const data = JSON.parse(validJson);\n        console.log(\"Parsed JSON Data:\", data); // Use the cleaned data\n        setMarkers(data);\n      } catch (error) {\n        console.error(\"Error parsing JSON:\", error.message, {\n          rawText,\n          validJson\n        });\n      }\n    }).catch(error => {\n      console.error(\"Error fetching locations:\", error.message);\n    });\n  };\n  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {\n    mapLocations();\n  }, []);\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"div\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Header__WEBPACK_IMPORTED_MODULE_1__[\"default\"], {\n    email: email\n  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"h1\", null, \"This is the Map Page\"), email ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"p\", null, \"Welcome \", email, \"!\") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"p\", null, \"You are not logged in\"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_vis_gl_react_google_maps__WEBPACK_IMPORTED_MODULE_2__.APIProvider, {\n    apiKey: apiKey\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_vis_gl_react_google_maps__WEBPACK_IMPORTED_MODULE_2__.Map, {\n    style: {\n      width: '100vw',\n      height: '100vh',\n      padding: '20px'\n    },\n    defaultCenter: {\n      lat: 40.696446033578745,\n      lng: -73.98791095312244\n    },\n    defaultZoom: 14,\n    gestureHandling: 'greedy',\n    disableDefaultUI: true\n  }, markers.map(marker => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_vis_gl_react_google_maps__WEBPACK_IMPORTED_MODULE_2__.Marker, {\n    key: marker.id,\n    position: {\n      lat: marker.lat,\n      lng: marker.lon\n    },\n    title: marker.address\n  })))));\n}\n\n//# sourceURL=webpack:///./client/src/pages/Map.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ MapPage)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ \"./node_modules/react-router/dist/index.js\");\n/* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Header */ \"./client/src/components/Header.js\");\n/* harmony import */ var _vis_gl_react_google_maps__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @vis.gl/react-google-maps */ \"./node_modules/@vis.gl/react-google-maps/dist/index.modern.mjs\");\n/* harmony import */ var _static_images_event_icon_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../static/images/event-icon.png */ \"./static/images/event-icon.png\");\n/* harmony import */ var _static_images_supply_icon_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../static/images/supply-icon.png */ \"./static/images/supply-icon.png\");\n\n\n\n\n\n\nfunction MapPage() {\n  const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useLocation)();\n  const email = location.state?.email;\n  const [eventMarkers, setEventMarkers] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);\n  const [supplyMarkers, setSupplyMarkers] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);\n  const apiKey = 'AIzaSyAHfuaC6Xs3ld9E6ref8FKCxulfDaz2RkY';\n  const mapLocations = () => {\n    fetch(\"http://localhost:8080/map\", {\n      method: \"GET\",\n      headers: {\n        \"Content-Type\": \"application/json\"\n      }\n    }).then(response => response.text()).then(rawText => {\n      const jsonEndIndex = rawText.indexOf(\"HTTP/1.0\");\n      const validJson = jsonEndIndex > 0 ? rawText.slice(0, jsonEndIndex).trim() : rawText.trim();\n      try {\n        const data = JSON.parse(validJson);\n        console.log(\"Parsed JSON Data:\", data); // Use the cleaned data\n        setEventMarkers(data[0]);\n        setSupplyMarkers(data[1]);\n      } catch (error) {\n        console.error(\"Error parsing JSON:\", error.message, {\n          rawText,\n          validJson\n        });\n      }\n    }).catch(error => {\n      console.error(\"Error fetching locations:\", error.message);\n    });\n  };\n  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {\n    mapLocations();\n  }, []);\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"div\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Header__WEBPACK_IMPORTED_MODULE_1__[\"default\"], {\n    email: email\n  }), email ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_vis_gl_react_google_maps__WEBPACK_IMPORTED_MODULE_2__.APIProvider, {\n    apiKey: apiKey\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_vis_gl_react_google_maps__WEBPACK_IMPORTED_MODULE_2__.Map, {\n    style: {\n      width: '100vw',\n      height: '100vh',\n      padding: '20px'\n    },\n    defaultCenter: {\n      lat: 40.696446033578745,\n      lng: -73.98791095312244\n    },\n    defaultZoom: 10,\n    gestureHandling: 'greedy',\n    disableDefaultUI: true\n  }, eventMarkers.map((marker, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_vis_gl_react_google_maps__WEBPACK_IMPORTED_MODULE_2__.Marker, {\n    key: index,\n    position: {\n      lat: marker.lat,\n      lng: marker.lng\n    },\n    title: `Event: ${marker.eventName} at ${marker.address}`,\n    options: {\n      icon: {\n        url: _static_images_event_icon_png__WEBPACK_IMPORTED_MODULE_3__\n      }\n    }\n  })), supplyMarkers.map((marker, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_vis_gl_react_google_maps__WEBPACK_IMPORTED_MODULE_2__.Marker, {\n    key: index,\n    position: {\n      lat: marker.lat,\n      lng: marker.lng\n    },\n    title: `${marker.itemName} needed at ${marker.address}`,\n    options: {\n      icon: {\n        url: _static_images_supply_icon_png__WEBPACK_IMPORTED_MODULE_4__\n      }\n    }\n  })))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"p\", null, \"You are not logged in\"));\n}\n\n//# sourceURL=webpack:///./client/src/pages/Map.js?");
 
 /***/ }),
 
@@ -290,6 +290,26 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
 
 /***/ }),
 
+/***/ "./static/images/event-icon.png":
+/*!**************************************!*\
+  !*** ./static/images/event-icon.png ***!
+  \**************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("module.exports = __webpack_require__.p + \"images/event-icon.png\";\n\n//# sourceURL=webpack:///./static/images/event-icon.png?");
+
+/***/ }),
+
+/***/ "./static/images/supply-icon.png":
+/*!***************************************!*\
+  !*** ./static/images/supply-icon.png ***!
+  \***************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("module.exports = __webpack_require__.p + \"images/supply-icon.png\";\n\n//# sourceURL=webpack:///./static/images/supply-icon.png?");
+
+/***/ }),
+
 /***/ "./node_modules/@vis.gl/react-google-maps/dist/index.modern.mjs":
 /*!**********************************************************************!*\
   !*** ./node_modules/@vis.gl/react-google-maps/dist/index.modern.mjs ***!
@@ -384,6 +404,18 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -407,6 +439,29 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 			if (!module.children) module.children = [];
 /******/ 			return module;
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		var scriptUrl;
+/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
+/******/ 		var document = __webpack_require__.g.document;
+/******/ 		if (!scriptUrl && document) {
+/******/ 			if (document.currentScript && document.currentScript.tagName.toUpperCase() === 'SCRIPT')
+/******/ 				scriptUrl = document.currentScript.src;
+/******/ 			if (!scriptUrl) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				if(scripts.length) {
+/******/ 					var i = scripts.length - 1;
+/******/ 					while (i > -1 && (!scriptUrl || !/^http(s?):/.test(scriptUrl))) scriptUrl = scripts[i--].src;
+/******/ 				}
+/******/ 			}
+/******/ 		}
+/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
+/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
+/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
+/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
+/******/ 		__webpack_require__.p = scriptUrl;
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/nonce */
