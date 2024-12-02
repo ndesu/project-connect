@@ -23,7 +23,8 @@ INSERT INTO Posts (UserID, PostImage, TimeOfPost, PostText) VALUES
 
 INSERT INTO Comments (PostID, UserID, PostedComment, TimeCommentedAt) VALUES
     (1, 2, 'hello', '2024-11-01 15:00:00'),
-    (2, 3, 'hello!', '2024-11-02 10:00:00');
+    (2, 3, 'Sounds fun!', '2024-11-02 10:00:00'),
+    (2, 1, 'I can help', '2024-11-04 12:00:00');
 
 INSERT INTO SupplyRequest (OrganizationID, ItemName, Quantity, SupplyDescription, RequestAddress) VALUES
     (1, 'Canned Food', 100, 'Canned items needed.', '123 Main St, Seattle, WA'),

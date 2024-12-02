@@ -137,3 +137,31 @@ h1 {
     cursor: pointer;
 }
 
+/* ------ Home Page ------ */
+
+.all-posts {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 30px;
+    background-color: green;
+    padding: 10px;
+}
+
+.post {
+    background-color: yellow;
+}
+
+.all-comments {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 10px;
+    background-color: purple;
+    padding: 5px;
+    padding-left: 50px;
+}
+
+.comment {
+    background-color: lightpink;
+}
