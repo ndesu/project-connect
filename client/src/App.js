@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import "./App.css"
 
 export default function App() {
+
     return (
         <BrowserRouter>
             <Routes>

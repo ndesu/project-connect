@@ -145,7 +145,13 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     self.wfile.write(
                         b'{"error": "Invalid credentials", "status": "failure"}'
                     )
-
+            elif data["type"] == "getMapCenter":
+                response = maps_table.get_user_location(conn, data["email"])
+                print(response)
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(bytes(json.dumps(response), "utf-8"))
         except json.JSONDecodeError:
             self.send_response(400)
             self.send_header("Content-type", "application/json")

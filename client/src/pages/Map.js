@@ -9,7 +9,8 @@ export default function MapPage() {
     const location = useLocation();
     const email = location.state?.email
     const [eventMarkers, setEventMarkers] = useState([])
-    const [supplyMarkers, setSupplyMarkers] = useState([]) 
+    const [supplyMarkers, setSupplyMarkers] = useState([])
+    const [userLocation, setUserLocation] = useState(null) 
     const apiKey = ''
 
     const mapLocations = () => {
@@ -42,49 +43,101 @@ export default function MapPage() {
         });
     };
 
+    const getCenter = () => {
+        console.log('function called')
+        fetch("http://localhost:8080", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ type: "getMapCenter", email })
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("map center: ", data)
+
+                const cityState = data
+                const geocodingURL = new URL("https://maps.googleapis.com/maps/api/geocode/json")
+                geocodingURL.searchParams.append("address", cityState)
+                geocodingURL.searchParams.append("key", apiKey)
+
+                fetch(geocodingURL.toString())
+                    .then((response) => response.json())
+                    .then((geocodingData) => {
+                        if (geocodingData.status === "OK") {
+                            console.log(geocodingData)
+                            const currLocation = geocodingData.results[0].geometry.location
+                            console.log("location:", currLocation.lat, currLocation.lng)
+                            setUserLocation(currLocation)
+                        } else {
+                            console.error("Geocoding error: ", geocodingData.status)
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("error fetching geocoding data:", error.message)
+                    })
+            })
+            .catch((error) => {
+                console.error("Error fetching map center: ", error.message)
+            })
+    }
+
     useEffect(() => {
         mapLocations();
+        getCenter();
     }, []);
 
     return (
         <div>
-            <Header email={email}/>
-            {email ? 
-            (<APIProvider apiKey={apiKey}>
-                <Map
-                    style={{width: '100vw', height: '100vh', padding: '20px'}}
-                    defaultCenter={{lat: 40.696446033578745, lng: -73.98791095312244}}
-                    defaultZoom={10}
-                    gestureHandling={'greedy'}
-                    disableDefaultUI={true}
-                >
-                    {eventMarkers.map((marker, index) => (
-                        <Marker
-                            key={index}
-                            position={{ lat: marker.lat, lng: marker.lng }}
-                            title={`Event: ${marker.eventName} at ${marker.address}`}
+            <Header email={email} />
+            {email ? (
+                userLocation ? ( // Render the map only after userLocation is ready
+                    <APIProvider apiKey={apiKey}>
+                        <Map
+                            style={{ width: '100vw', height: '100vh' }}
+                            center={userLocation} // Use 'center' for dynamic updates
+                            zoom={10}
                             options={{
-                                icon: {
-                                    url: eventIcon,
-                                }
+                                gestureHandling: 'greedy',
+                                disableDefaultUI: true,
                             }}
-                        />
-                    ))}
-                    {supplyMarkers.map((marker, index) => (
-                        <Marker
-                            key={index}
-                            position={{ lat: marker.lat, lng: marker.lng }}
-                            title={`${marker.itemName} needed at ${marker.address}`}
-                            options={{
-                                icon: {
-                                    url: supplyIcon,
-                                }
-                            }}
-                        />
-                    ))}
-                </Map>
-            </APIProvider>)
-            : (<p>You are not logged in</p>)}
+                        >
+                            {/* Event Markers */}
+                            {eventMarkers.map((marker, index) => (
+                                <Marker
+                                    key={index}
+                                    position={{ lat: marker.lat, lng: marker.lng }}
+                                    title={`Event: ${marker.eventName} at ${marker.address}`}
+                                    options={{
+                                        icon: {
+                                            url: eventIcon,
+                                        },
+                                    }}
+                                />
+                            ))}
+
+                            {/* Supply Markers */}
+                            {supplyMarkers.map((marker, index) => (
+                                <Marker
+                                    key={index}
+                                    position={{ lat: marker.lat, lng: marker.lng }}
+                                    title={`${marker.itemName} needed at ${marker.address}`}
+                                    options={{
+                                        icon: {
+                                            url: supplyIcon,
+                                        },
+                                    }}
+                                />
+                            ))}
+                        </Map>
+                    </APIProvider>
+                ) : (
+                    <p>Loading map...</p> // Fallback while waiting for userLocation
+                )
+            ) : (
+                <p>You are not logged in</p>
+            )}
         </div>
+
     )
 }

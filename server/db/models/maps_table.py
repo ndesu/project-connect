@@ -52,3 +52,19 @@ def get_map_locations(conn):
     print([allEventInfo, allSupplyInfo])
 
     return [allEventInfo, allSupplyInfo]
+
+def get_user_location(conn, email):
+    cur = conn.cursor()
+
+    cur.execute(
+        """SELECT locatedAt FROM Users WHERE email=%s""", (email,)
+    )
+    existing_loc = cur.fetchone()
+
+    if not existing_loc:
+        cur.execute(
+            """SELECT locatedAt FROM Organizations WHERE email=%s""", (email,)
+        )
+        existing_loc = cur.fetchone()
+    
+    return existing_loc
