@@ -29,14 +29,16 @@ CREATE TABLE Event (
     EventTime TIME,
     NumMaxVolunteers INT,
     RSVPs INT,
+    LocationID INT, 
     FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID)
+    FOREIGN KEY (LocationID) REFERENCES MapLocation(LocationID)
 );
 
 CREATE TABLE MapLocation (
     LocationID INT PRIMARY KEY,
     Longitude DECIMAL(10, 6),
     Latitude DECIMAL(10, 6),
-    Address VARCHAR(50)
+    Address VARCHAR(75)
 );
 
 CREATE TABLE Post (
@@ -63,8 +65,9 @@ CREATE TABLE SupplyRequest (
     ItemName VARCHAR(50),
     Quantity INT,
     Description TEXT,
-    Location VARCHAR(50),
-    FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID)
+    LocationID INT, 
+    FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID),
+    FOREIGN KEY (LocationID) REFERENCES MapLocation(LocationID)
 );
 
 CREATE TABLE FulfillRequest (
