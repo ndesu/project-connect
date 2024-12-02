@@ -1,13 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate  } from "react-router-dom";
 import Header from "../components/Header";
-import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 
 export default function MapPage() {
     const location = useLocation();
     const email = location.state?.email
-
-    email ? console.log(email) : console.log("no email :(")
+    const [markers, setMarkers] = useState([]) 
 
     const apiKey = ''
 
@@ -18,17 +17,16 @@ export default function MapPage() {
                 "Content-Type": "application/json",
             },
         })
-        .then((response) => response.text()) // Read response as plain text
+        .then((response) => response.text())
         .then((rawText) => {
-            // Find where the valid JSON ends (before the HTML starts)
-            const jsonEndIndex = rawText.indexOf("HTTP/1.0"); // Find start of extra metadata
+            const jsonEndIndex = rawText.indexOf("HTTP/1.0");
             const validJson = jsonEndIndex > 0 
-                ? rawText.slice(0, jsonEndIndex).trim() // Extract JSON before the metadata
-                : rawText.trim(); // If no metadata, use the full response
-    
+                ? rawText.slice(0, jsonEndIndex).trim()
+                : rawText.trim();
             try {
-                const data = JSON.parse(validJson); // Parse extracted JSON
+                const data = JSON.parse(validJson);
                 console.log("Parsed JSON Data:", data); // Use the cleaned data
+                setMarkers(data)
             } catch (error) {
                 console.error("Error parsing JSON:", error.message, {
                     rawText,
@@ -41,6 +39,7 @@ export default function MapPage() {
         });
     };
     
+
     
 
     useEffect(() => {
@@ -61,7 +60,15 @@ export default function MapPage() {
                     defaultZoom={14}
                     gestureHandling={'greedy'}
                     disableDefaultUI={true}
-                />
+                >
+                    {markers.map((marker) => (
+                        <Marker
+                            key={marker.id}
+                            position={{ lat: marker.lat, lng: marker.lon }}
+                            title={marker.address}
+                        />
+                    ))}
+                </Map>
             </APIProvider>
         </div>
     )
