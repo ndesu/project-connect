@@ -19,6 +19,13 @@ CREATE TABLE Organization (
     TotalEvents INT
 );
 
+CREATE TABLE MapLocation (
+    LocationID INT PRIMARY KEY,
+    Longitude DECIMAL(10, 6),
+    Latitude DECIMAL(10, 6),
+    Address VARCHAR(75)
+);
+
 CREATE TABLE Event (
     EventID INT PRIMARY KEY,
     OrganizationID INT,
@@ -30,15 +37,8 @@ CREATE TABLE Event (
     NumMaxVolunteers INT,
     RSVPs INT,
     LocationID INT, 
-    FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID)
+    FOREIGN KEY (OrganizationID) REFERENCES Organization(OrganizationID),
     FOREIGN KEY (LocationID) REFERENCES MapLocation(LocationID)
-);
-
-CREATE TABLE MapLocation (
-    LocationID INT PRIMARY KEY,
-    Longitude DECIMAL(10, 6),
-    Latitude DECIMAL(10, 6),
-    Address VARCHAR(75)
 );
 
 CREATE TABLE Post (
