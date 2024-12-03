@@ -1,5 +1,5 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 export default function NewPost() {
@@ -7,22 +7,23 @@ export default function NewPost() {
     const email = location.state?.email
     const clientinfo = location.state?.clientinfo
 
+    const navigate = useNavigate();
+
     const [postData, setPostData] = useState({
         postimage: "",
         posttext: "",
-        // userid: 
     })
 
-    // function checkFields(dataObj) {
-    //     console.log(dataObj)
-    //     for (let key in dataObj) {
-    //         if(!dataObj.hasOwnProperty(key)) continue;
-    //         if(!dataObj[key]) {
-    //             return false
-    //         };
-    //     }
-    //     return true;
-    // }
+    function checkFields(dataObj) {
+        console.log(dataObj)
+        for (let key in dataObj) {
+            if (!dataObj.hasOwnProperty(key)) continue;
+            if (!dataObj[key]) {
+                return false
+            };
+        }
+        return true;
+    }
 
     // const navigate = useNavigate();
 
@@ -36,6 +37,9 @@ export default function NewPost() {
         if (!checkFields(postData)) {
             alert("Enter All Information Before Submitting")
         } else {
+            let allPostData = postData
+            allPostData["clientid"] = clientinfo["clientid"]
+            allPostData["clienttype"] = clientinfo["clienttype"]
             fetch("http://localhost:8080", {
                 method: "POST",
                 headers: {
@@ -47,13 +51,18 @@ export default function NewPost() {
                 .then((data) => {
                     console.log("Post response:", data);
                     if (data.status === "success") {
-                        navigate('/home')
+                        navigate('/home', {
+                            state: {
+                                email: clientinfo.email,
+                                clientinfo: clientinfo
+                            }
+                        })
                     } else {
                         alert("Failed to Create Post!")
                     }
                     setPostData({
-                        email: "",
-                        password: "",
+                        postimage: "",
+                        posttext: "",
                     });
                 })
                 .catch((error) => {

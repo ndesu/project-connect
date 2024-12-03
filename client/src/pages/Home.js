@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 export default function Home() {
     const location = useLocation();
     const email = location.state?.email
     const clientinfo = location.state?.clientinfo
+
+    const navigate = useNavigate();
 
     console.log("\nClient Info in Home: ", clientinfo)
 
@@ -17,8 +19,9 @@ export default function Home() {
         try {
             const response = await fetch("http://localhost:8080/get_all_posts")
 
-            const all_posts_data = await response.json();
+            let all_posts_data = await response.json();
             console.log("all_posts_data: ", all_posts_data, "\n\nType of: ", typeof (all_posts_data))
+            all_posts_data = all_posts_data.reverse()
             setAllPosts(all_posts_data)
 
         } catch (error) {
@@ -37,15 +40,22 @@ export default function Home() {
         return `../../../public/assets/user_images/${userid}/${postimage}`
     }
 
+    const handleNavButtonSubmit = (pathname) => {
+        console.log("NAVIGATING");
+        navigate(pathname, { state: { email: email, clientinfo: clientinfo } });
+    }
+
     return (
         <div class="page">
             <Header email={email} clientinfo={clientinfo} />
             {/* <h1>This is the Home Page</h1> */}
 
             <div class="home-bar">
-                {clientinfo ? <div class="home-welcome">Welcome {clientinfo.name}!
-                    <div class="create-post">Create New Post</div>
-
+                {clientinfo ? <div class="home-welcome">
+                    Welcome, {clientinfo.name}!
+                    <li>
+                        <a onClick={() => handleNavButtonSubmit('/newpost')}>Create New Post</a>
+                    </li>
                 </div> :
                     <div class="home-no-login">Login to create posts and comments!</div>
                 }

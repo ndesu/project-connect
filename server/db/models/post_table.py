@@ -1,3 +1,5 @@
+import datetime
+
 import psycopg2
 
 # ---------- CREATE A DATABASE TABLE ----------
@@ -75,6 +77,21 @@ def get_all_posts(conn):
 
     cur.close()
     return all_posts_data
+
+
+def create_new_post(conn, postimage, posttext, clientid, clienttype):
+    cur = conn.cursor()
+
+    current_time = datetime.datetime.now()
+
+    if clienttype == "user":
+        cur.execute(
+            """INSERT INTO posts (userid, postimage, timeofpost, posttext) VALUES (%s, %s, %s, %s)""",
+            (clientid, postimage, current_time, posttext),
+        )
+
+    conn.commit()
+    cur.close()
 
 
 # def insert_seed_data(conn):

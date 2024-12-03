@@ -178,11 +178,23 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
                 self.wfile.write(bytes(json.dumps(response), "utf-8"))
-            # elif data["type"] == "createPost":
-            #     post_table.create_new_post(
-            #         conn,
-            #         data[]
-            # )
+            elif data["type"] == "createPost":
+                post_table.create_new_post(
+                    conn,
+                    data["postimage"],
+                    data["posttext"],
+                    data["clientid"],
+                    data["clienttype"],
+                )
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                response = {
+                    "message": "Post created successfully",
+                    "status": "success",
+                }
+                self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
         except json.JSONDecodeError:
             self.send_response(400)
             self.send_header("Content-type", "application/json")
