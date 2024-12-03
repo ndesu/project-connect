@@ -79,6 +79,20 @@ def get_all_posts(conn):
     return all_posts_data
 
 
+def create_new_comment(conn, postid, userid, commenttext):
+    cur = conn.cursor()
+    print("Comment data: ", postid, userid, commenttext)
+    current_time = datetime.datetime.now()
+
+    cur.execute(
+        """INSERT INTO comments (postid, userid, postedcomment, timecommentedat) VALUES (%s, %s, %s, %s)
+        """,
+        (postid, userid, commenttext, current_time),
+    )
+    conn.commit()
+    cur.close()
+
+
 def create_new_post(conn, postimage, posttext, clientid, clienttype):
     cur = conn.cursor()
 

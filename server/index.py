@@ -43,7 +43,6 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             return
         if self.path == "/get_all_posts":
             response = post_table.get_all_posts(conn)
-
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
@@ -178,7 +177,27 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
                 self.wfile.write(bytes(json.dumps(response), "utf-8"))
+            elif data["type"] == "createComment":
+                print("Data from comment: ", data)
+                post_table.create_new_comment(
+                    conn, data["postid"], data["userid"], data["commenttext"]
+                )
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                response = {
+                    "message": "Comment created successfully",
+                    "status": "success",
+                }
+                self.wfile.write(bytes(json.dumps(response), "utf-8"))
             elif data["type"] == "createPost":
+                print("Data from upload img: ", data)
+                isFormDataEmpty = True
+                for p in data["imgdata"]:
+                    isFormDataEmpty = False
+                    break
+                print("is empty: ", isFormDataEmpty)
+
                 post_table.create_new_post(
                     conn,
                     data["postimage"],
@@ -194,6 +213,13 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     "status": "success",
                 }
                 self.wfile.write(bytes(json.dumps(response), "utf-8"))
+            elif data["type"] == "uploadImage":
+                print("Data from upload img: ", data["img_data"])
+                isFormDataEmpty = True
+                for p in data["img_data"]:
+                    isFormDataEmpty = False
+                    break
+                print("is empty: ", isFormDataEmpty)
 
         except json.JSONDecodeError:
             self.send_response(400)
