@@ -23,11 +23,56 @@ def get_all_posts(conn):
     cur = conn.cursor()
     cur.execute(
         """
-        SELECT postid, userid, postimage, posttext FROM posts
+        SELECT posts.postid, posts.userid, posts.postimage, posts.posttext, users.fullname
+        FROM posts
+        INNER JOIN users ON posts.userid=users.userid;
         """
     )
-    all_posts_data = cur.fetchall()
-    print("all_posts_data: ", all_posts_data, "\nType: ", type(all_posts_data))
+
+    all_posts_arr = cur.fetchall()
+
+    all_posts_data = []
+
+    for post in all_posts_arr:
+        post_dict = {}
+        post_dict["postid"] = post[0]
+        post_dict["userid"] = post[1]
+        post_dict["postimage"] = post[2]
+        post_dict["posttext"] = post[3]
+        post_dict["postername"] = post[4]
+        post_dict["comments"] = []
+
+        all_posts_data.append(post_dict)
+
+    cur.execute(
+        """
+        SELECT comments.commentid, comments.postid, comments.userid, comments.postedcomment, users.fullname
+        FROM comments
+        INNER JOIN users ON comments.userid=users.userid;
+        """
+    )
+
+    all_comments_arr = cur.fetchall()
+
+    all_comments_data = {}
+
+    for row in all_comments_arr:
+        comment = {}
+        comment["commentid"] = row[0]
+        comment["postid"] = row[1]
+        comment["userid"] = row[2]
+        comment["postedcomment"] = row[3]
+        comment["fullname"] = row[4]
+
+        if comment["postid"] in all_comments_data:
+            all_comments_data[comment["postid"]].append(comment)
+        else:
+            all_comments_data[comment["postid"]] = [comment]
+
+    for post in all_posts_data:
+        if post["postid"] in all_comments_data:
+            post["comments"] = all_comments_data[post["postid"]]
+
     cur.close()
     return all_posts_data
 

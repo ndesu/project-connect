@@ -11,14 +11,14 @@ from db.models import create_and_seed
 sys.path.append("..")
 
 # Import database tables
-from db.models import post_table, user_table, maps_table
+from db.models import maps_table, post_table, user_table
 
 # Local variables
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "USERNAME"
-DB_PASSWORD = "PASSWORD"
+DB_USERNAME = "adriaorenstein"
+DB_PASSWORD = "pg-adria"
 
 # ---------- CONNECT TO SERVER ----------
 
@@ -33,7 +33,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 content_type, _ = guess_type(static_file_path)
                 if not content_type:
                     content_type = "application/octet-stream"
-                
+
                 self.send_response(200)
                 self.send_header("Content-type", content_type)
                 self.end_headers()
@@ -58,7 +58,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 response = locations
                 self.wfile.write(bytes(json.dumps(response), "utf-8"))
             except Exception as e:
-                print('Error: ', e)
+                print("Error: ", e)
                 # set response code
                 self.send_response(404)
                 self.send_header("Content-type", "application/json")
@@ -68,19 +68,33 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.path = "../client/public/index.html"
         else:
             # If path received is '/', change to default path '/index.html'
-            if self.path in ["/", "/home", "/events", "/map", "/profile"]:
-                self.path = "../client/public/index.html"
+            if self.path in ("/", "/home", "/events", "/map", "/profile"):
+                self.path = "../public/index.html"
             try:
-                file_to_open = open(self.path[1:]).read()
+                extension = self.path[-3:]
                 # set response code
-                self.send_response(200)
-                self.send_header("Content-type", "text/html")
-                self.end_headers()
-                # set body to file content
-                self.wfile.write(bytes(file_to_open, "utf-8"))
+                if extension == "png" or extension == "jpg" or extension == "jpeg":
+                    with open(self.path[1:], "rb") as f:
+                        file_to_open = f.read()
+                    self.send_response(200)
+                    if extension == "png":
+                        self.send_header("Content-type", "image/png")
+                    else:
+                        self.send_header("Content-type", "image/jpeg")
+                    self.end_headers()
+                    # set body to file content
+                    self.wfile.write(file_to_open)
+                else:
+                    file_to_open = open(self.path[1:]).read()
+                    self.send_response(200)
+                    self.send_header("Content-type", "text/html")
+                    self.end_headers()
+                    # set body to file content
+                    self.wfile.write(bytes(file_to_open, "utf-8"))
 
             # If file is not found, return 404 error
-            except:
+            except Exception as e:
+                print("\n\nError getting file: ", e)
                 # set response code
                 self.send_response(404)
                 self.send_header("Content-type", "text/html")

@@ -18,12 +18,19 @@ INSERT INTO Events (OrganizationID, EventName, EventDescription, EventType, Even
     (2, 'Charity2 Event Name', 'Charity2 Event Description.', 'Volunteer', '2024-11-02', '09:00:00', 20, 15, 2);
 
 INSERT INTO Posts (UserID, PostImage, TimeOfPost, PostText) VALUES
-    (1, 'food.jpg', '2024-11-03 14:30:00', 'Check out this food!'),
-    (2, 'help.jpg', '2024-11-04 09:45:00', 'We are in need of some help.');
+    (1, 'food.jpg', '2024-11-03 14:30:00', 'Just had an awesome afternoon serving lunch to my good friends at Rosie''s Place! It''s always so nice to give people a hot meal, especially with the cold weather. They''re always looking for volunteers so make sure to stop by sometime.'),
+    (1, 'clothes.jpg', '2024-11-03 18:30:00', 'Took Aunt Linda to the dropbox on North Ave to drop off her old clothes. You should''ve seen the clothes she found in the back of her closet. I haven''t seen bell bottoms like that since the 70s! Yikes!!!'),
+    (2, 'volunteer.jpg', '2024-11-04 09:45:00', 'This year I decided to start volunteering at Apex for Youth. And I never could''ve imagined how lifechanging a decision it would be. It''s been so impactful to watch these kids learn and grow and I''m so honored to have a part in that. Here''s to another amazing year with Apex!'),
+    (3, 'kitchen.jpg', '2024-11-05 11:06:00', 'Rosie''s place helped me out when I needed them, so happy to give back');
 
 INSERT INTO Comments (PostID, UserID, PostedComment, TimeCommentedAt) VALUES
-    (1, 2, 'hello', '2024-11-01 15:00:00'),
-    (2, 3, 'hello!', '2024-11-02 10:00:00');
+    (1, 2, 'Tell me next time you''re volunteering, I''ll go too!', '2024-11-03 15:00:00'),
+    (2, 3, 'omg Aunt Linda''s bell bottoms... hope the next person loves them as much as she did!', '2024-11-03 20:00:00'),
+    (2, 1, 'So cool :)', '2024-11-04 12:00:00'),
+    (3, 3, 'So proud of you!', '2024-11-05 15:30:00'),
+    (3, 1, 'I bet you''re the best mentor', '2024-11-05 15:45:00'),
+    (3, 2, 'thanks everyone!', '2024-11-06 08:20:00'),
+    (4, 1, 'Loved seeing you again, talk soon', '2024-11-07 22:01:00');
 
 INSERT INTO SupplyRequest (OrganizationID, ItemName, Quantity, SupplyDescription, LocationID) VALUES
     (1, 'Canned Food', 100, 'Canned items needed.', 1),

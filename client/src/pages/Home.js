@@ -28,6 +28,12 @@ export default function Home() {
         get_post_data()
     }, [])
 
+    let src_path = ``;
+
+    const get_src_path = (userid, postimage) => {
+        return `../../../public/assets/user_images/${userid}/${postimage}`
+    }
+
     return (
         <div class="page">
             <Header email={email} />
@@ -37,11 +43,21 @@ export default function Home() {
                 <p>You are not logged in</p>
             }
 
-            <div>{allPosts.map((post, i) => {
+            <div class="all-posts">{allPosts.map((post, i) => {
                 return (
-                    <div key={i}>
-                        <div>{post[2]}</div>
-                        <div>{post[3]}</div>
+                    <div key={i} class="post">
+                        <div><b>{post.postername}</b> says...</div>
+                        <div><img class="post-img" src={get_src_path(post.userid, post.postimage)} /></div>
+                        <div>{post.posttext}</div>
+                        <div class="all-comments">{post.comments.map((comment, j) => {
+                            return (
+                                <div key={j} class="comment">
+                                    <div><b>{comment.fullname}</b> says...</div>
+                                    <div>{comment.postedcomment}</div>
+                                </div>
+                            )
+                        })}
+                        </div>
                     </div>
                 )
             })}</div>
