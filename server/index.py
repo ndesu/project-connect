@@ -1,6 +1,7 @@
 import json
 import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from mimetypes import guess_type
 
 import psycopg2
 
@@ -10,7 +11,7 @@ from db.models import create_and_seed
 sys.path.append("..")
 
 # Import database tables
-from db.models import post_table, user_table
+from db.models import maps_table, post_table, user_table
 
 # Local variables
 
@@ -24,7 +25,22 @@ DB_PASSWORD = "pg-adria"
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        print("\nSelf path: \n", self.path)
+        if self.path.startswith("/static/"):
+            static_file_path = self.path[1:]
+            try:
+                with open(static_file_path, "rb") as static_file:
+                    content = static_file.read()
+                content_type, _ = guess_type(static_file_path)
+                if not content_type:
+                    content_type = "application/octet-stream"
+
+                self.send_response(200)
+                self.send_header("Content-type", content_type)
+                self.end_headers()
+                self.wfile.write(content)
+            except FileNotFoundError:
+                self.send_error(404, "File not found")
+            return
         if self.path == "/get_all_posts":
             response = post_table.get_all_posts(conn)
 
@@ -32,7 +48,24 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
-
+        elif self.path == "/map":
+            locations = maps_table.get_map_locations(conn)
+            print(locations)
+            try:
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                response = locations
+                self.wfile.write(bytes(json.dumps(response), "utf-8"))
+            except Exception as e:
+                print("Error: ", e)
+                # set response code
+                self.send_response(404)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                # set body to error message
+                self.wfile.write(b"404 - Not Found")
+            self.path = "../client/public/index.html"
         else:
             # If path received is '/', change to default path '/index.html'
             if self.path in ("/", "/home", "/events", "/map", "/profile"):
@@ -126,7 +159,13 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     self.wfile.write(
                         b'{"error": "Invalid credentials", "status": "failure"}'
                     )
-
+            elif data["type"] == "getMapCenter":
+                response = maps_table.get_user_location(conn, data["email"])
+                print(response)
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(bytes(json.dumps(response), "utf-8"))
         except json.JSONDecodeError:
             self.send_response(400)
             self.send_header("Content-type", "application/json")

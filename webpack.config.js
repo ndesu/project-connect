@@ -23,6 +23,13 @@ module.exports = {
                 ],
                 use: ['babel-loader'],
             },
+            {
+                test: /\.(png|jpg|jpeg|gif|svg)$/i, // Match image files
+                type: 'asset/resource', // Use asset module for handling files
+                generator: {
+                    filename: 'images/[name][ext]', // Output images to 'images' folder with hashed names
+                },
+            },
         ]
     },
 };

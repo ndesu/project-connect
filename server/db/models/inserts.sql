@@ -9,13 +9,13 @@ INSERT INTO Organizations (OrganizationName, OrgDescription, Email, PhoneNumber,
     ('Charity1', 'Description of Charity1.', 'charity1@email.org', '1234567890', 'password123', 'New York, NY', 10),
     ('Charity2', 'Description of Charity2.', 'charity2@email.com', '9876543210', 'password234', 'Austin, TX', 5);
 
-INSERT INTO Events (OrganizationID, EventName, EventDescription, EventType, EventDate, EventTime, NumMaxVolunteers, RSVPs) VALUES
-    (1, 'Charity1 Event Name', 'Charity1 Event Description.', 'Donation', '2024-11-01', '10:00:00', 50, 30),
-    (2, 'Charity2 Event Name', 'Charity2 Event Description.', 'Volunteer', '2024-11-02', '09:00:00', 20, 15);
-
 INSERT INTO MapLocation (Longitude, Latitude, OrgAddress) VALUES
     (-122.33, 47.61, '123 Main St, Seattle, WA'),
     (-97.74, 30.26, '456 Elm St, Austin, TX');
+
+INSERT INTO Events (OrganizationID, EventName, EventDescription, EventType, EventDate, EventTime, NumMaxVolunteers, RSVPs, LocationID) VALUES
+    (1, 'Charity1 Event Name', 'Charity1 Event Description.', 'Donation', '2024-11-01', '10:00:00', 50, 30, 1),
+    (2, 'Charity2 Event Name', 'Charity2 Event Description.', 'Volunteer', '2024-11-02', '09:00:00', 20, 15, 2);
 
 INSERT INTO Posts (UserID, PostImage, TimeOfPost, PostText) VALUES
     (1, 'food.jpg', '2024-11-03 14:30:00', 'Just had an awesome afternoon serving lunch to my good friends at Rosie''s Place! It''s always so nice to give people a hot meal, especially with the cold weather. They''re always looking for volunteers so make sure to stop by sometime.'),
@@ -32,9 +32,9 @@ INSERT INTO Comments (PostID, UserID, PostedComment, TimeCommentedAt) VALUES
     (3, 2, 'thanks everyone!', '2024-11-06 08:20:00'),
     (4, 1, 'Loved seeing you again, talk soon', '2024-11-07 22:01:00');
 
-INSERT INTO SupplyRequest (OrganizationID, ItemName, Quantity, SupplyDescription, RequestAddress) VALUES
-    (1, 'Canned Food', 100, 'Canned items needed.', '123 Main St, Seattle, WA'),
-    (2, 'Trash Bags', 50, 'Trash bags for garbage.', '456 Elm St, Austin, TX');
+INSERT INTO SupplyRequest (OrganizationID, ItemName, Quantity, SupplyDescription, LocationID) VALUES
+    (1, 'Canned Food', 100, 'Canned items needed.', 1),
+    (2, 'Trash Bags', 50, 'Trash bags for garbage.', 2);
 
 INSERT INTO FulfillRequest (RequestID, UserID, QuantityFulfilled, DateFulfilled) VALUES
     (1, 1, 20, '2024-11-10'),

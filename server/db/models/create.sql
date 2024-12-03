@@ -20,6 +20,13 @@ CREATE TABLE IF NOT EXISTS Organizations (
     TotalEvents INT
 );
 
+CREATE TABLE IF NOT EXISTS MapLocation (
+    LocationID SERIAL PRIMARY KEY,
+    Longitude DECIMAL(10, 6),
+    Latitude DECIMAL(10, 6),
+    OrgAddress VARCHAR(50)
+);
+
 CREATE TABLE IF NOT EXISTS Events (
     EventID SERIAL PRIMARY KEY,
     OrganizationID INT,
@@ -30,14 +37,9 @@ CREATE TABLE IF NOT EXISTS Events (
     EventTime TIME,
     NumMaxVolunteers INT,
     RSVPs INT,
-    FOREIGN KEY (OrganizationID) REFERENCES Organizations(OrganizationID)
-);
-
-CREATE TABLE IF NOT EXISTS MapLocation (
-    LocationID SERIAL PRIMARY KEY,
-    Longitude DECIMAL(10, 6),
-    Latitude DECIMAL(10, 6),
-    OrgAddress VARCHAR(50)
+    LocationID INT, 
+    FOREIGN KEY (OrganizationID) REFERENCES Organizations(OrganizationID),
+    FOREIGN KEY (LocationID) REFERENCES MapLocation(LocationID)
 );
 
 CREATE TABLE IF NOT EXISTS Posts (
@@ -65,8 +67,9 @@ CREATE TABLE IF NOT EXISTS SupplyRequest (
     ItemName VARCHAR(50),
     Quantity INT,
     SupplyDescription TEXT,
-    RequestAddress VARCHAR(50),
-    FOREIGN KEY (OrganizationID) REFERENCES Organizations(OrganizationID)
+    LocationID INT, 
+    FOREIGN KEY (OrganizationID) REFERENCES Organizations(OrganizationID),
+    FOREIGN KEY (LocationID) REFERENCES MapLocation(LocationID)
 );
 
 CREATE TABLE IF NOT EXISTS FulfillRequest (
