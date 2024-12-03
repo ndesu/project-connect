@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate  } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { AdvancedMarker, APIProvider, Map, Marker, Pin } from "@vis.gl/react-google-maps";
 import eventIcon from '../../../static/images/event-icon.png'
@@ -8,9 +8,10 @@ import supplyIcon from '../../../static/images/supply-icon.png'
 export default function MapPage() {
     const location = useLocation();
     const email = location.state?.email
+    const clientinfo = location.state?.clientinfo
     const [eventMarkers, setEventMarkers] = useState([])
     const [supplyMarkers, setSupplyMarkers] = useState([])
-    const [userLocation, setUserLocation] = useState(null) 
+    const [userLocation, setUserLocation] = useState(null)
     const apiKey = ''
 
     const mapLocations = () => {
@@ -20,27 +21,27 @@ export default function MapPage() {
                 "Content-Type": "application/json",
             },
         })
-        .then((response) => response.text())
-        .then((rawText) => {
-            const jsonEndIndex = rawText.indexOf("HTTP/1.0");
-            const validJson = jsonEndIndex > 0 
-                ? rawText.slice(0, jsonEndIndex).trim()
-                : rawText.trim();
-            try {
-                const data = JSON.parse(validJson);
-                console.log("Parsed JSON Data:", data); // Use the cleaned data
-                setEventMarkers(data[0])
-                setSupplyMarkers(data[1])
-            } catch (error) {
-                console.error("Error parsing JSON:", error.message, {
-                    rawText,
-                    validJson,
-                });
-            }
-        })
-        .catch((error) => {
-            console.error("Error fetching locations:", error.message);
-        });
+            .then((response) => response.text())
+            .then((rawText) => {
+                const jsonEndIndex = rawText.indexOf("HTTP/1.0");
+                const validJson = jsonEndIndex > 0
+                    ? rawText.slice(0, jsonEndIndex).trim()
+                    : rawText.trim();
+                try {
+                    const data = JSON.parse(validJson);
+                    console.log("Parsed JSON Data:", data); // Use the cleaned data
+                    setEventMarkers(data[0])
+                    setSupplyMarkers(data[1])
+                } catch (error) {
+                    console.error("Error parsing JSON:", error.message, {
+                        rawText,
+                        validJson,
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching locations:", error.message);
+            });
     };
 
     const getCenter = () => {
@@ -89,7 +90,7 @@ export default function MapPage() {
 
     return (
         <div>
-            <Header email={email} />
+            <Header email={email} clientinfo={clientinfo} />
             {email ? (
                 userLocation ? ( // Render the map only after userLocation is ready
                     <APIProvider apiKey={apiKey}>

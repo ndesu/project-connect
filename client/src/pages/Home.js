@@ -5,6 +5,9 @@ import Header from "../components/Header";
 export default function Home() {
     const location = useLocation();
     const email = location.state?.email
+    const clientinfo = location.state?.clientinfo
+
+    console.log("\nClient Info in Home: ", clientinfo)
 
     email ? console.log(email) : console.log("no email :(")
 
@@ -36,11 +39,14 @@ export default function Home() {
 
     return (
         <div class="page">
-            <Header email={email} />
+            <Header email={email} clientinfo={clientinfo} />
             {/* <h1>This is the Home Page</h1> */}
 
             <div class="home-bar">
-                {email ? <div class="home-welcome">Welcome {email}!</div> :
+                {clientinfo ? <div class="home-welcome">Welcome {clientinfo.name}!
+                    <div class="create-post">Create New Post</div>
+
+                </div> :
                     <div class="home-no-login">Login to create posts and comments!</div>
                 }
             </div>
