@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../components/Header";
+import "../App.css";
 
 export default function Events() {
     const location = useLocation();
@@ -18,3 +19,5 @@ export default function Events() {
 
     )
 }
+
+// WORKING
