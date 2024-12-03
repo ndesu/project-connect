@@ -17,8 +17,8 @@ from db.models import maps_table, post_table, user_table
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "adriaorenstein"
-DB_PASSWORD = "pg-adria"
+DB_USERNAME = "xenamaldonado"
+DB_PASSWORD = "PASSWORD"
 
 # ---------- CONNECT TO SERVER ----------
 
@@ -43,11 +43,19 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             return
         if self.path == "/get_all_posts":
             response = post_table.get_all_posts(conn)
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+        elif self.path == "/get_all_profile":
+            response = user_table.get_all_profile(conn)
 
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
         elif self.path == "/map":
             locations = maps_table.get_map_locations(conn)
             print(locations)

@@ -83,7 +83,7 @@ def get_client(conn, email):
 
     client_info = {}
 
-    cur.execute("""SELECT * FROM users WHERE email = %s""", (email,))
+    cur.execute("""SELECT * FROM users WHERE email = %s""", (email, ))
     user = cur.fetchone()
     print("\n\nUser: ", user)
     if user:
@@ -102,3 +102,38 @@ def get_client(conn, email):
             client_info["email"] = org[2]
 
     return client_info
+
+def get_all_profile(conn):
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        # SELECT users.fullName, users.email, users.locatedat, users.rsvps
+        SELECT 
+            users.fullName, 
+            users.email, 
+            users.locatedat, 
+            users.rsvps,
+            events.eventName, 
+            events.eventDescription, 
+            events.eventType, 
+            events.eventDate, 
+            events.eventTime, 
+            events.numMaxVolunteers, 
+            events.RSVPs, 
+            events.locationID
+        FROM 
+            users
+        INNER JOIN 
+            RSVP ON users.userid = RSVP.userID
+        INNER JOIN 
+            events ON RSVP.eventID = events.eventID;
+        """
+    )
+
+    all_profile_arr = cur.fetchall()
+    all_profile_data = []
+
+    cur.close()
+
+    return all_profile_data
