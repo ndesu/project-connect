@@ -44,8 +44,9 @@ CREATE TABLE Event (
 CREATE TABLE Post (
     PostID INT PRIMARY KEY,
     UserID INT,
-    Image VARCHAR(50),
+    PostImage VARCHAR(50),
     TimeOfPost TIMESTAMP,
+    PostText VARCHAR(500),
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
