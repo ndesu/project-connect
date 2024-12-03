@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import MapPage from "./pages/Map";
 import Events from "./pages/Events";
 import Profile from "./pages/Profile";
+import NewPost from "./pages/NewPost";
 import "./App.css"
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/home" element={<Home />} />
+                <Route path="/newpost" element={<NewPost />} />
                 <Route path="/map" element={<MapPage />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/events" element={<Events />} />

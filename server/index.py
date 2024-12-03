@@ -68,7 +68,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.path = "../client/public/index.html"
         else:
             # If path received is '/', change to default path '/index.html'
-            if self.path in ("/", "/home", "/events", "/map", "/profile"):
+            if self.path in ("/", "/home", "/events", "/map", "/profile", "/newpost"):
                 self.path = "../public/index.html"
             try:
                 extension = self.path[-3:]
@@ -118,12 +118,16 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     data["fullName"],
                     data["city"] + ", " + data["state"],
                 )
+
+                client_info = user_table.get_client(conn, data["email"])
+
                 self.send_response(200)
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
                 response = {
                     "message": "Data received successfully!",
                     "status": "success",
+                    "clientinfo": client_info,
                 }
                 self.wfile.write(bytes(json.dumps(response), "utf-8"))
             elif data["type"] == "createOrgAccount":
@@ -136,22 +140,30 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     data["phoneNumber"],
                     data["city"] + ", " + data["state"],
                 )
+
+                client_info = user_table.get_client(conn, data["email"])
+
                 self.send_response(200)
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
                 response = {
                     "message": "Data received successfully!",
                     "status": "success",
+                    "clientinfo": client_info,
                 }
                 self.wfile.write(bytes(json.dumps(response), "utf-8"))
             elif data["type"] == "login":
                 if user_table.user_login(conn, data["email"], data["password"]):
+                    client_info = user_table.get_client(conn, data["email"])
                     self.send_response(200)
                     self.send_header("Content-type", "application/json")
                     self.end_headers()
-                    self.wfile.write(
-                        b'{"message": "Login successful", "status": "success"}'
-                    )
+                    response = {
+                        "message": "Login successful",
+                        "status": "success",
+                        "clientinfo": client_info,
+                    }
+                    self.wfile.write(bytes(json.dumps(response), "utf-8"))
                 else:
                     self.send_response(401)
                     self.send_header("Content-type", "application/json")
@@ -166,6 +178,11 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
                 self.wfile.write(bytes(json.dumps(response), "utf-8"))
+            # elif data["type"] == "createPost":
+            #     post_table.create_new_post(
+            #         conn,
+            #         data[]
+            # )
         except json.JSONDecodeError:
             self.send_response(400)
             self.send_header("Content-type", "application/json")

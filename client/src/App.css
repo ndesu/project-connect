@@ -150,8 +150,8 @@ h1 {
     flex-direction: column;
     justify-content: space-between;
     row-gap: 30px;
-    margin-left: 500px;
-    margin-right: 500px;
+    margin-left: 25%;
+    margin-right: 25%;
 
 }
 
@@ -185,7 +185,8 @@ h1 {
     width: 410px;
     height: 410px;
     object-fit: cover;
-    margin-left: 100px;
+    margin-left: 10%;
+    margin-right: 10%;
     border-color: white;
     border-style: solid;
     border-width: 10px;
