@@ -5,7 +5,9 @@ module.exports = {
     entry: './client/index.js',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'static'),
+        // path: path.resolve(__dirname, 'static'),
+        path: __dirname + '/public/',
+        // path: '/'
     },
     module: {
         rules: [
@@ -15,6 +17,7 @@ module.exports = {
             },
             {
                 test: /\.js$/,
+                // test: /jsx?$/,
                 include: [
                     path.resolve(__dirname, 'client')
                 ],

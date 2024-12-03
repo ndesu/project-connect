@@ -69,13 +69,10 @@ def get_all_posts(conn):
         else:
             all_comments_data[comment["postid"]] = [comment]
 
-    print("all_comments_data: ", all_comments_data)
-
     for post in all_posts_data:
         if post["postid"] in all_comments_data:
             post["comments"] = all_comments_data[post["postid"]]
 
-    print("all_posts_data: ", all_posts_data)
     cur.close()
     return all_posts_data
 

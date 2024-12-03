@@ -28,6 +28,12 @@ export default function Home() {
         get_post_data()
     }, [])
 
+    let src_path = ``;
+
+    const get_src_path = (userid, postimage) => {
+        return `../../../public/assets/user_images/${userid}/${postimage}`
+    }
+
     return (
         <div class="page">
             <Header email={email} />
@@ -41,7 +47,7 @@ export default function Home() {
                 return (
                     <div key={i} class="post">
                         <div><b>{post.postername}</b> says...</div>
-                        <div>{post.postimage}</div>
+                        <div><img src={get_src_path(post.userid, post.postimage)} width="500" height="500" /></div>
                         <div>{post.posttext}</div>
                         <div class="all-comments">{post.comments.map((comment, j) => {
                             return (

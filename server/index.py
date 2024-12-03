@@ -24,6 +24,7 @@ DB_PASSWORD = "pg-adria"
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
+        print("\nSelf path: \n", self.path)
         if self.path == "/get_all_posts":
             response = post_table.get_all_posts(conn)
 
@@ -34,19 +35,33 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         else:
             # If path received is '/', change to default path '/index.html'
-            if self.path in ["/", "/home", "/events", "/map", "/profile"]:
-                self.path = "../client/public/index.html"
+            if self.path in ("/", "/home", "/events", "/map", "/profile"):
+                self.path = "../public/index.html"
             try:
-                file_to_open = open(self.path[1:]).read()
+                extension = self.path[-3:]
                 # set response code
-                self.send_response(200)
-                self.send_header("Content-type", "text/html")
-                self.end_headers()
-                # set body to file content
-                self.wfile.write(bytes(file_to_open, "utf-8"))
+                if extension == "png" or extension == "jpg" or extension == "jpeg":
+                    with open(self.path[1:], "rb") as f:
+                        file_to_open = f.read()
+                    self.send_response(200)
+                    if extension == "png":
+                        self.send_header("Content-type", "image/png")
+                    else:
+                        self.send_header("Content-type", "image/jpeg")
+                    self.end_headers()
+                    # set body to file content
+                    self.wfile.write(file_to_open)
+                else:
+                    file_to_open = open(self.path[1:]).read()
+                    self.send_response(200)
+                    self.send_header("Content-type", "text/html")
+                    self.end_headers()
+                    # set body to file content
+                    self.wfile.write(bytes(file_to_open, "utf-8"))
 
             # If file is not found, return 404 error
-            except:
+            except Exception as e:
+                print("\n\nError getting file: ", e)
                 # set response code
                 self.send_response(404)
                 self.send_header("Content-type", "text/html")
