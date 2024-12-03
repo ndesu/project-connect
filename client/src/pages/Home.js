@@ -47,7 +47,7 @@ export default function Home() {
                 return (
                     <div key={i} class="post">
                         <div><b>{post.postername}</b> says...</div>
-                        <div><img src={get_src_path(post.userid, post.postimage)} width="500" height="500" /></div>
+                        <div><img class="post-img" src={get_src_path(post.userid, post.postimage)} /></div>
                         <div>{post.posttext}</div>
                         <div class="all-comments">{post.comments.map((comment, j) => {
                             return (
