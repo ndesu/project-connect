@@ -230,3 +230,45 @@ h1 {
 .home-no-login {
     font-style: italic;
 }
+
+/* ------ Profile Page ------ */
+
+.bold-text {
+    font-weight: bold;
+}
+
+.normal-text {
+    font-weight: normal;
+}
+
+.profile-title{
+    text-align: center;
+}
+
+.profile-box {
+    border-radius: 8px; 
+    padding: 20px; 
+    margin: 20px auto; 
+    width: 80%; 
+    max-width: 600px; 
+    background-color: rgb(185, 185, 185); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    text-align: center;
+}
+
+.profile-box p {
+    font-size: 24px; 
+    line-height: 1.5;
+    margin: 8px 0; 
+    font-weight: bold; 
+}
+
+.profile-box strong {
+    color: #251717; 
+    font-style: bold;
+}
+
+.centered-title {
+    text-align: center; 
+    margin-bottom: 20px; 
+}
