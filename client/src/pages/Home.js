@@ -37,23 +37,25 @@ export default function Home() {
     return (
         <div class="page">
             <Header email={email} />
-            <h1>This is the Home Page</h1>
+            {/* <h1>This is the Home Page</h1> */}
 
-            {email ? <p>Welcome {email}!</p> :
-                <p>You are not logged in</p>
-            }
+            <div class="home-bar">
+                {email ? <div class="home-welcome">Welcome {email}!</div> :
+                    <div class="home-no-login">Login to create posts and comments!</div>
+                }
+            </div>
 
             <div class="all-posts">{allPosts.map((post, i) => {
                 return (
                     <div key={i} class="post">
-                        <div><b>{post.postername}</b> says...</div>
+                        <div class="post-name"><b>{post.postername}</b></div>
                         <div><img class="post-img" src={get_src_path(post.userid, post.postimage)} /></div>
-                        <div>{post.posttext}</div>
+                        <div class="post-text"><b>{post.postername}</b> {post.posttext}</div>
                         <div class="all-comments">{post.comments.map((comment, j) => {
                             return (
                                 <div key={j} class="comment">
-                                    <div><b>{comment.fullname}</b> says...</div>
-                                    <div>{comment.postedcomment}</div>
+                                    <div class="comment-name"><b>{comment.fullname}</b></div>
+                                    <div class="comment-text">{comment.postedcomment}</div>
                                 </div>
                             )
                         })}
