@@ -4,6 +4,7 @@ import os
 import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from mimetypes import guess_type
+from urllib.parse import parse_qs, urlparse
 
 import psycopg2
 
@@ -19,8 +20,8 @@ from db.models import events_table, maps_table, post_table, requests_table, user
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "USERNAME"
-DB_PASSWORD = "PASSWORD"
+DB_USERNAME = "username"
+DB_PASSWORD = "password"
 
 # ---------- CONNECT TO SERVER ----------
 
@@ -45,6 +46,10 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             except FileNotFoundError:
                 self.send_error(404, "File not found")
             return
+
+        parsed_path = urlparse(self.path)
+        query_params = parse_qs(parsed_path.query)
+
         if self.path == "/get_all_posts":
             response = post_table.get_all_posts(conn)
             self.send_response(200)
@@ -281,6 +286,49 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 "status": "success",
             }
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+        elif data["type"] == "getUserEvents":
+            response = events_table.get_user_events(conn, data["userID"])
+            print(response)
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+        elif data["type"] == "rsvp":
+            try:
+                response = events_table.rsvp_event(
+                    conn, data["eventId"], data["userID"]
+                )
+                print("the response:", response)
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+            except Exception as e:
+                print(e)
+                self.send_response(401)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(b'{"error": "Could not change", "status": "failure"}')
+        elif data["type"] == "cancelRsvp":
+            try:
+                response = events_table.cancel_rsvp(
+                    conn, data["eventId"], data["userID"]
+                )
+                print("the response:", response)
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+            except Exception as e:
+                print(e)
+                self.send_response(401)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(b'{"error": "Could not change", "status": "failure"}')
 
         elif data["type"] == "fulfillReq":
             requests_table.fulfillRequest(
