@@ -3,7 +3,6 @@ import urllib.parse
 
 import psycopg2
 import requests
-
 from db.models import lat_and_lng
 
 

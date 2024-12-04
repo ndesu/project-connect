@@ -94,8 +94,9 @@ export default function Profile() {
         if (email) {
             get_profile_data();
         }
-        if(clientinfo.clienttype === "user") fetchUserEvents();
-        else fetchOrgEvents()
+        if(clientinfo.clienttype === "user") {
+            fetchUserEvents();
+        } else {fetchOrgEvents()}
     }, [email]); 
     
     console.log(profileData)
@@ -138,8 +139,8 @@ export default function Profile() {
                     <br />
                     <h2 className="centered-title">Events to Attend:</h2>
                     <div className="profile-box">
-                        {userEvents.length > 0 ? (
-                            userEvents.map((event, index) => (
+                        {organizationEvents.length > 0 ? (
+                            organizationEvents.map((event, index) => (
                                 <div className="event-listitem" key={index}>
                                     <p>{event.eventName}</p>
                                     <div className="datetime">
@@ -190,6 +191,23 @@ export default function Profile() {
                     <div class="create-request-container">
                         <h1 onClick={toggleCreateRequest}>Create Request</h1>
                         {createRequestToggle && <CreateSupplyRequest orgID={clientinfo.clientid}/>}
+                    </div>
+                    <div className="profile-box">
+                        {organizationEvents.length > 0 ? (
+                            organizationEvents.map((event, index) => (
+                                <div className="event-listitem" key={index}>
+                                    <p>{event.eventName}</p>
+                                    <div className="datetime">
+                                        <p>on {event.date} at {event.time}</p>
+                                    </div>
+                                    <p>{event.address}</p>
+                                </div>
+                            ))
+                        ) : (
+                            <p>
+                                <span className="normal-text">You currently do not have any events.</span>
+                            </p>
+                        )}
                     </div>
                 </div>
                 
