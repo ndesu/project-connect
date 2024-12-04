@@ -110,7 +110,7 @@ def get_all_profile(conn):
     #  user
     cur.execute(
         """
-                SELECT users.fullName, users.email, users.locatedat, users.rsvps 
+                SELECT users.fullName, users.email, users.locatedat, users.rsvpss 
                 FROM users"""
     )
     all_profile_arr = cur.fetchall()
@@ -129,7 +129,7 @@ def get_all_profile(conn):
     # organization
     cur.execute(
         """
-        SELECT organizations.organizationName, organizations.orgdescription, organizations.email, organizations.phonenumber, organizations.locatedat, organizations.totalevents
+        SELECT organizations.organizationName, organizations.orgdescription, organizations.email, organizations.phonenumber, organizations..locatedat, organizations.totalevents
         FROM organizations
     """
     )

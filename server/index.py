@@ -20,8 +20,8 @@ from db.models import events_table, maps_table, post_table, requests_table, user
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "adriaorenstein"
-DB_PASSWORD = "pg-adria"
+DB_USERNAME = "username"
+DB_PASSWORD = "password"
 
 # ---------- CONNECT TO SERVER ----------
 
@@ -84,7 +84,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
 
-        elif self.path == "/map":
+        elif self.path == "/get_map":
             locations = maps_table.get_map_locations(conn)
             print(locations)
             try:
@@ -344,7 +344,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
 
         elif data["type"] == "getUserEventsInfo":
-            response = events_table.get_user_events_info(conn, data["userID"])
+            response = events_table.get_user_events_info(conn, data['userID'])
             print(response)
             self.send_response(200)
             self.send_header("Content-type", "application/json")

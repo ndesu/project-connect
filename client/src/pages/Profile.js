@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "../App.css";
+import CreateEvent from "../components/createEvent";
 
 // fullName, email, password, location, rsvp
 
@@ -17,6 +18,7 @@ export default function Profile() {
     const [profileData, setProfileData] = useState(null);
     const [error, setError] = useState(null);
     const [userEvents, setUserEvents] = useState([])
+    const [organizationEvents, setOrganizationEvents] = useState([])
 
     const get_profile_data = async () => {
         try {
@@ -54,11 +56,35 @@ export default function Profile() {
          
     }
 
+    const fetchOrgEvents = async() => {
+        console.log(userID)
+        try {
+            fetch("http://localhost:8080", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ type: "getOrgEventsInfo", userID })
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    setOrganizationEvents(data)
+                })
+        } catch (err) {
+            console.error("Error fetching org events:", err)
+            setError(err.message)
+        }
+         
+    }
+
+    
+
     useEffect(() => {
         if (email) {
             get_profile_data();
         }
-        fetchUserEvents();
+        if(clientinfo.clienttype === "user") fetchUserEvents();
+        else fetchOrgEvents()
     }, [email]); 
     
     console.log(profileData)
@@ -148,6 +174,8 @@ export default function Profile() {
                     </p>
                 </div>
             )}
+            <CreateEvent orgID={clientinfo.clientid}/>
+            
         </div>
     );
 }
