@@ -100,8 +100,8 @@ def create_request(conn, orgID, itemName, quantity, supplyDescription, location)
     )
 
     cur.execute(
-        """SELECT locationid FROM maplocation WHERE longitude=%s and latitude=%s and orgaddress=%s""",
-        (lon, lat, location),
+        """SELECT locationid FROM maplocation WHERE orgaddress=%s""",
+        (location,),
     )
     locID = cur.fetchone()[0]
 

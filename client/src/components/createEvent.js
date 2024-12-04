@@ -10,8 +10,6 @@ export default function CreateEvent({ orgID }) {
         time: "",
         maxVolunteers: "",
         address: "",
-        // latitude: "",
-        // longitude: ""
     })
 
     function checkFields(dataObj) {
@@ -33,27 +31,6 @@ export default function CreateEvent({ orgID }) {
     const handleCreateEventSubmit = (e) => {
         e.preventDefault();
         
-        // const geocodingURL = new URL("https://maps.googleapis.com/maps/api/geocode/json")
-        // geocodingURL.searchParams.append("address", createEventData.address)
-        // geocodingURL.searchParams.append("key", apiKey)
-
-        // fetch(geocodingURL.toString())
-        //     .then((response) => response.json())
-        //     .then((geocodingData) => {
-        //         if (geocodingData.status === "OK") {
-        //             console.log(geocodingData)
-        //             const currLocation = geocodingData.results[0].geometry.location
-        //             console.log("location:", currLocation.lat, currLocation.lng)
-        //             setCreateEventData.latitude(currLocation.lat)
-        //             setCreateEventData.longitude(currLocation.lng)
-        //         } else {
-        //             console.error("Geocoding error: ", geocodingData.status)
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         console.error("error fetching geocoding data:", error.message)
-        //     })
-        
         if(!checkFields(createEventData)) {
             alert("Enter All Information Before Submitting")
         } else {
@@ -67,6 +44,15 @@ export default function CreateEvent({ orgID }) {
                 .then((response) => response.json())
                 .then((data) => {
                     console.log(data)
+                    setCreateEventData({
+                        orgID: orgID,
+                        eventName: "",
+                        eventDescription: "",
+                        date: "",
+                        time: "",
+                        maxVolunteers: "",
+                        address: "",
+                    })
                 })
         }
     }
