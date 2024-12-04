@@ -95,13 +95,21 @@ export default function Home() {
             {/* <h1>This is the Home Page</h1> */}
 
             <div class="home-bar">
-                {clientinfo ? <div class="home-welcome">
-                    Welcome, {clientinfo.name}!
-                    <a class="create-post-btn" onClick={() => handleNavButtonSubmit('/newpost')}>Create New Post</a>
-                </div> :
+
+                {!clientinfo ?
                     <div class="home-no-login">Login to create posts and comments!</div>
+                    : clientinfo["clienttype"] == "user" ?
+                        <div>
+                            <div class="home-welcome">
+                                Welcome, {clientinfo.name}! </div>
+                            <a class="create-post-btn" onClick={() => handleNavButtonSubmit('/newpost')}>Create New Post</a>
+                        </div>
+                        :
+                        <div class="home-welcome">
+                            Welcome, {clientinfo.name}! </div>
                 }
             </div>
+
 
             <div class="all-posts">{allPosts.map((post, i) => {
                 return (
@@ -119,19 +127,23 @@ export default function Home() {
                         })}
                         </div>
                         <div>
-                            {clientinfo ?
-                                <div>
-                                    <form class="create-comment" onSubmit={(e, postid) => handleCommentSubmit(e, post.postid)}>
-                                        <label class="create-comment-label" htmlFor="commenttext"><b>{clientinfo.name}</b></label>
-                                        <div></div>
-                                        <textarea class="create-comment-input" type="text" name="commenttext" value={commentData.commenttext} onChange={handleCommentChange} />
-                                        <button type="submit" class="create-comment-btn">Post</button>
-                                    </form>
-                                </div>
-                                :
-                                <div>
-                                    Login to comment.
-                                </div>
+                            {
+                                !clientinfo ?
+                                    <div>
+                                        Login as user to comment.
+                                    </div>
+                                    : clientinfo["clienttype"] == "user" ?
+                                        <div>
+                                            <form class="create-comment" onSubmit={(e, postid) => handleCommentSubmit(e, post.postid)}>
+                                                <label class="create-comment-label" htmlFor="commenttext"><b>{clientinfo.name}</b></label>
+                                                <div></div>
+                                                <textarea class="create-comment-input" type="text" name="commenttext" value={commentData.commenttext} onChange={handleCommentChange} />
+                                                <button type="submit" class="create-comment-btn">Post</button>
+                                            </form>
+                                        </div>
+                                        : <div class="create-comment">
+                                            <i>Login as user to comment.</i>
+                                        </div>
                             }
                         </div>
                     </div>
