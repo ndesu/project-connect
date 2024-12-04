@@ -87,7 +87,7 @@ export default function Supplies() {
                 {clientinfo ? <div class="home-welcome">
                     Welcome, {clientinfo.name}!
                 </div> :
-                    <div>Login to fulfill supply requests.</div>
+                    <div class="home-no-login">Login to fulfill supply requests.</div>
                 }
             </div>
 
@@ -100,19 +100,23 @@ export default function Supplies() {
                         <div class="request-descrip">{request.supplydescription}</div>
                         <div class="request-quantity"><b>Quantity:</b> {request.quantity}</div>
 
-                        {clientinfo ?
-                            <div>
-                                <form class="fulfill-form" onSubmit={(e, requestid) => handleFulfillSubmit(e, request.requestid)}>
-                                    <label class="fulfill-label" htmlFor="commenttext">How many will you donate?</label>
-                                    <div></div>
-                                    <input class="fulfill-input" type="number" name="commenttext" value={fulfillData} onChange={handleFulfillChange} />
-                                    <button type="submit" class="fulfill-btn">Submit</button>
-                                </form>
-                            </div>
-                            :
+                        {!clientinfo ?
                             <div class="fulfill-form">
-                                <i>Login to fulfill supply requests.</i>
+                                <i>Login as user to fulfill supply requests.</i>
                             </div>
+                            : clientinfo["clienttype"] == "user" ?
+                                <div>
+                                    <form class="fulfill-form" onSubmit={(e, requestid) => handleFulfillSubmit(e, request.requestid)}>
+                                        <label class="fulfill-label" htmlFor="commenttext">How many will you donate?</label>
+                                        <div></div>
+                                        <input class="fulfill-input" type="number" name="commenttext" value={fulfillData} onChange={handleFulfillChange} />
+                                        <button type="submit" class="fulfill-btn">Submit</button>
+                                    </form>
+                                </div>
+                                :
+                                <div class="fulfill-form">
+                                    <i>Login as user to fulfill supply requests.</i>
+                                </div>
                         }
                     </div>
                 )

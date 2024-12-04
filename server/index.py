@@ -342,7 +342,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 "status": "success",
             }
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
-        
+
         elif data["type"] == "getUserEventsInfo":
             response = events_table.get_user_events_info(conn, data['userID'])
             print(response)
@@ -350,26 +350,6 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
-        elif data["type"] == "getOrgEventsInfo":
-            response = events_table.get_org_events_info(conn, data['orgID'])
-            print(response)
-            self.send_response(200)
-            self.send_header("Content-type", "application/json")
-            self.end_headers()
-            self.wfile.write(bytes(json.dumps(response), "utf-8"))
-        elif data["type"] == "createEvent":
-            try:
-                events_table.create_event(conn, data["eventName"], data["eventDescription"], data["date"], data["time"], data["maxVolunteers"], data["address"], data['orgID'])
-                self.send_response(200)
-                self.send_header("Content-type", "application/json")
-                self.end_headers()
-                response = {
-                    "message": "event created successfully",
-                    "status": "success",
-                }
-                self.wfile.write(bytes(json.dumps(response), "utf-8"))
-            except Exception as e:
-                print("error:",e)
 
 
 # Create web server
