@@ -46,7 +46,6 @@ export default function Home() {
     }
 
     const handleCommentChange = (e) => {
-        console.log("Changing comment...")
         const { value } = e.target;
         setCommentData({ ...commentData, commenttext: value });
     }

@@ -6,12 +6,18 @@ INSERT INTO Users (FullName, Email, PasswordHash, LocatedAt, RSVPs) VALUES
     ('Adria Orenstein', 'adriaorenstein@gmail.com', 'password789', 'Chicago, IL', 0);
 
 INSERT INTO Organizations (OrganizationName, OrgDescription, Email, PhoneNumber, PasswordHash, LocatedAt, TotalEvents) VALUES 
-    ('Charity1', 'Description of Charity1.', 'charity1@email.org', '1234567890', 'password123', 'New York, NY', 10),
-    ('Charity2', 'Description of Charity2.', 'charity2@email.com', '9876543210', 'password234', 'Austin, TX', 5);
+    ('Cans for Kids', 'Hey there! We collect cans of food from all over the country to give to those in need. Ending hunger one can of soup at a time!', 'charity1@email.org', '1234567890', 'abc','New York, NY', 10),
+    ('Friends of Trees', 'Clean parks and clean water is what we are all about. Nature is for everyone.', 'charity2@email.com', '9876543210', 'xyz', 'Austin, TX', 5),
+    ('Mouse Rescue of Greater Boston', 'At MRGN, it is all about the little guys! We rescue mice across greater Boston and find them safe homes.', 'mouse@email.com', '1357924680', 'mousepass', 'Boston, MA', 3),
+    ('Omlettes for Orcas', 'Seattle is known for their vibrant orca population. We are here to serve this beautiful species whatever they need.', 'orcas@email.com', '1236547809', 'whalepass', 'Seattle, WA', 1),
+    ('Colorado Shelters United', 'We are the unification of all shelters across the state of Colorado.', 'csu@email.com', '1112223344', '456abc', 'Boulder, CO', 2);
 
 INSERT INTO MapLocation (Longitude, Latitude, OrgAddress) VALUES
+    (-73.94, 40.80, '221 E 122nd St, New York, NY'),
+    (30.26, -97.74, '456 Elm St, Austin, TX'),
+    (-71.07, 42.34, '15 Hanson St, Boston, MA'),
     (-122.33, 47.61, '123 Main St, Seattle, WA'),
-    (-97.74, 30.26, '456 Elm St, Austin, TX');
+    (-105.264924, 40.022114, '2344 Spruce St, Boulder, CO');
 
 INSERT INTO Events (OrganizationID, EventName, EventDescription, EventType, EventDate, EventTime, NumMaxVolunteers, RSVPs, LocationID) VALUES
     (1, 'Charity1 Event Name', 'Charity1 Event Description.', 'Donation', '2024-11-01', '10:00:00', 50, 30, 1),
@@ -33,8 +39,15 @@ INSERT INTO Comments (PostID, UserID, PostedComment, TimeCommentedAt) VALUES
     (4, 1, 'Loved seeing you again, talk soon', '2024-11-07 22:01:00');
 
 INSERT INTO SupplyRequest (OrganizationID, ItemName, Quantity, SupplyDescription, LocationID) VALUES
-    (1, 'Canned Food', 100, 'Canned items needed.', 1),
-    (2, 'Trash Bags', 50, 'Trash bags for garbage.', 2);
+    (1, 'Canned Soup', 100, 'We are in need of cans of soup for our annual canned food drive. All proceeds will be donated to those in need. Please stop by any time with your cans. Chicken noodle, cream of mushroom, broccoli cheddar, we take it all! We greatly appreciate anything you are able to give.', 1),
+    (1, 'Canned Vegetables', 200, 'Do you have old cans lying around in your pantry? Please stop by anytime to drop them off with any of our volunteers. We are collecting cans of vegetables for our annual canned food drive. All proceeds will be donated to those in need. This is a great time to get rid of that extra baby corn!', 1),
+    (2, 'Trash Bags', 50, 'This weekend we are organizing to clean up the local park. There is a lot of trash especially on the north side by the playground so we need any trash bags we can to pick this up.', 2),
+    (3, 'Paper Towel Rolls', 30, 'We go through lots of paper towels when cleaning up after our rescue mice. Paper towels go a long way around here.', 3),
+    (3, 'Mouse Toys', 10, 'We have a new batch of rescue mice arriving on Saturday and would love to greet them with new toys. Wheels and houses and tubes are all welcome!', 3),
+    (3, 'Mouse Food', 25, 'Any bags of mouse food you can donate for our new mice would be really appreciated.', 3),
+    (4, 'Water Bottles', 60, 'Our volunteers will be out on the beaches this weekend so we are hoping to collect water bottles for them.', 4),
+    (5, 'Blankets', 10, 'With the cold weather coming, we are hoping to collect extra blankets for our residents.', 5),
+    (5, 'Socks', 150, 'Pairs of socks are really helpful for our residents in the cold months.', 5);
 
 INSERT INTO FulfillRequest (RequestID, UserID, QuantityFulfilled, DateFulfilled) VALUES
     (1, 1, 20, '2024-11-10'),

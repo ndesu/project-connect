@@ -113,17 +113,19 @@ export default function NewPost() {
         <div >
             <Header email={email} clientinfo={clientinfo} />
 
-            <img class="new-img" src={imgURL} alt="default image" />
-
             <div>
+                Create a New Post
                 <form class="post-form" onSubmit={handlePostSubmit}>
-                    <div class="new-post-img">
-                        <label htmlFor="postimage">Post Image:</label>
+                    <img class="new-img" src={imgURL} alt="default image" />
+                    <div class="choose-img">
+                        <label htmlFor="postimage"><b>Select Image: </b></label>
                         <input type="file" id="imgURL" accept="image/png, image/jpeg, image/jpg" ref={imgRef} onChange={handleImageChange} />
                     </div>
                     <div class="new-post-text">
-                        <label htmlFor="posttext">Post Description:</label>
-                        <input type="text" name="posttext" value={postData.posttext} onChange={handlePostChange} />
+                        <label htmlFor="posttext"><b>Post Description: </b></label>
+                        <textarea
+                            class="post-descrip"
+                            type="text" name="posttext" value={postData.posttext} onChange={handlePostChange} />
                     </div>
 
                     <div class="postbtn"><button type="submit">Create Post</button></div>
