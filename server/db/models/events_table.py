@@ -130,4 +130,32 @@ def get_user_events_info(conn, user_id):
 
     return eventinfo
 
+def get_org_events_info(conn, orgID):
+    cur = conn.cursor()
+
+    cur.execute("""
+                SELECT * FROM organizations WHERE organizationid=%s""", (orgID,))
     
+    info = cur.fetchall()
+    eventinfo = []
+    for e in info:
+        e = {
+            "eventid": e[0],
+            "eventName": e[2],
+            "date": str(e[5]),
+            "time": str(e[6]),
+            "locationid": e[9]
+        }
+
+        cur.execute("""SELECT orgaddress FROM maplocation WHERE locationid=%s""", (info["locationid"],))
+        address = cur.fetchone()
+        e["address"] = address[0]
+
+        eventinfo.append(e)
+    
+    cur.close()
+    conn.commit()
+
+    return eventinfo
+
+

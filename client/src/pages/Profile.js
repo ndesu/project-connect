@@ -17,6 +17,7 @@ export default function Profile() {
     const [profileData, setProfileData] = useState(null);
     const [error, setError] = useState(null);
     const [userEvents, setUserEvents] = useState([])
+    const [organizationEvents, setOrganizationEvents] = useState([])
 
     const get_profile_data = async () => {
         try {
@@ -54,11 +55,35 @@ export default function Profile() {
          
     }
 
+    const fetchOrgEvents = async() => {
+        console.log(userID)
+        try {
+            fetch("http://localhost:8080", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ type: "getOrgEventsInfo", orgID })
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    setOrganizationEvents(data)
+                })
+        } catch (err) {
+            console.error("Error fetching org events:", err)
+            setError(err.message)
+        }
+         
+    }
+
+    
+
     useEffect(() => {
         if (email) {
             get_profile_data();
         }
-        fetchUserEvents();
+        if(clientinfo.clienttype === "user") fetchUserEvents();
+        else fetchOrgEvents()
     }, [email]); 
     
     console.log(profileData)
@@ -94,7 +119,8 @@ export default function Profile() {
             {/* Events Section */}
             <br></br>
             <h2 className="centered-title">Events to Attend:</h2>
-            <div className="profile-box">
+            {clientinfo.clienttype == "user" ? 
+            <div class="user-profile-box">
                 {userEvents.length > 0 ? (
                     userEvents.map((event, index) => (
                         <div class="event-listitem" key={index}>
@@ -110,9 +136,24 @@ export default function Profile() {
                         <span className="normal-text">You currently have not signed up for any events.</span>
                     </p>
                 )}
-            </div>
-
-
+            </div> : 
+            <div>
+                {organizationEvents.length > 0 ? (
+                    organizationEvents.map((event, index) => (
+                        <div class="event-listitem" key={index}>
+                            <p>{event.eventName}</p>
+                            <div class="datetime">
+                                <p>on {event.date} at {event.time}</p>
+                            </div>
+                            <p>{event.address}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p> 
+                        <span className="normal-text">You do not have any events planned.</span>
+                    </p>
+                )}
+            </div>}
         </div>
 
 
