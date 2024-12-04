@@ -1,28 +1,34 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+
+import default_img from "../../../public/assets/default_img.png";
 
 export default function NewPost() {
     const location = useLocation();
     const email = location.state?.email
     const clientinfo = location.state?.clientinfo
 
+    const navigate = useNavigate();
+
+    const imgRef = useRef();
+
     const [postData, setPostData] = useState({
-        postimage: "",
         posttext: "",
-        // userid: 
     })
 
-    // function checkFields(dataObj) {
-    //     console.log(dataObj)
-    //     for (let key in dataObj) {
-    //         if(!dataObj.hasOwnProperty(key)) continue;
-    //         if(!dataObj[key]) {
-    //             return false
-    //         };
-    //     }
-    //     return true;
-    // }
+    const [imgURL, setimgURL] = useState(default_img);
+
+    function checkFields(dataObj) {
+        console.log(dataObj)
+        for (let key in dataObj) {
+            if (!dataObj.hasOwnProperty(key)) continue;
+            if (!dataObj[key]) {
+                return false
+            };
+        }
+        return true;
+    }
 
     // const navigate = useNavigate();
 
@@ -31,31 +37,72 @@ export default function NewPost() {
         setPostData({ ...postData, [name]: value });
     };
 
+    const handleImageChange = (e) => {
+        let uploadedFile = imgRef.current.files[0];
+        const cachedURL = URL.createObjectURL(uploadedFile);
+        setimgURL(cachedURL);
+    }
+
     const handlePostSubmit = (e) => {
         e.preventDefault();
         if (!checkFields(postData)) {
             alert("Enter All Information Before Submitting")
         } else {
-            fetch("http://localhost:8080", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ type: "createPost", ...postData }),
-            })
-                .then((response) => response.json())
+            let uploadedFile = imgRef.current.files[0];
+            let file_name = uploadedFile.name;
+
+            uploadedFile.arrayBuffer()
                 .then((data) => {
-                    console.log("Post response:", data);
-                    if (data.status === "success") {
-                        navigate('/home')
-                    } else {
-                        alert("Failed to Create Post!")
+                    let u8data = new Uint8Array(data);
+                    let sdata = "";
+                    for (let i = 0; i < u8data.length; i++) {
+                        sdata += String.fromCharCode(u8data[i]);
                     }
-                    setPostData({
-                        email: "",
-                        password: "",
-                    });
+
+                    let newPostData = {
+                        'imgdata': btoa(sdata),
+                        'imgname': file_name,
+                        'posttext': postData['posttext'],
+                        'clientid': clientinfo['clientid'],
+                        'clienttype': clientinfo['clienttype'],
+                        'type': 'createNewPost'
+                    }
+                    return newPostData;
                 })
+                .then((newPostData) => {
+                    fetch("http://localhost:8080", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(newPostData),
+                    })
+                })
+                // .then((response) => response.json())
+                .then(() => {
+                    navigate('/home', {
+                        state: {
+                            email: clientinfo.email,
+                            clientinfo: clientinfo
+                        }
+                    })
+                })
+                // .then((data) => {
+                //     console.log("Post response:", data);
+                //     if (data.status === "success") {
+                //         navigate('/home', {
+                //             state: {
+                //                 email: clientinfo.email,
+                //                 clientinfo: clientinfo
+                //             }
+                //         })
+                //     } else {
+                //         alert("Failed to Create Post!")
+                //     }
+                //     setPostData({
+                //         posttext: ""
+                //     });
+                // })
                 .catch((error) => {
                     console.error("Error during post creation:", error);
                 });
@@ -66,13 +113,18 @@ export default function NewPost() {
         <div >
             <Header email={email} clientinfo={clientinfo} />
 
+            <img class="new-img" src={imgURL} alt="default image" />
+
             <div>
                 <form class="post-form" onSubmit={handlePostSubmit}>
-                    <label htmlFor="postimage">Post Image:</label>
-                    <input type="postimage" name="postimage" value={postData.postimage} onChange={handlePostChange} />
-
-                    <label htmlFor="posttext">Post Description:</label>
-                    <input type="posttext" name="posttext" value={postData.posttext} onChange={handlePostChange} />
+                    <div class="new-post-img">
+                        <label htmlFor="postimage">Post Image:</label>
+                        <input type="file" id="imgURL" accept="image/png, image/jpeg, image/jpg" ref={imgRef} onChange={handleImageChange} />
+                    </div>
+                    <div class="new-post-text">
+                        <label htmlFor="posttext">Post Description:</label>
+                        <input type="text" name="posttext" value={postData.posttext} onChange={handlePostChange} />
+                    </div>
 
                     <div class="postbtn"><button type="submit">Create Post</button></div>
                 </form>

@@ -3,8 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 
 export default function Header({ email, clientinfo }) {
     const navigate = useNavigate();
-    console.log(`here is the email: ${email}`)
-    console.log(`here is the clientinfo: ${clientinfo}`)
+    // console.log(`here is the email: ${email}`)
+    // console.log(`here is the clientinfo: ${clientinfo}`)
 
     const handleNavButtonSubmit = (pathname) => {
         navigate(pathname, { state: { email: email, clientinfo: clientinfo } })

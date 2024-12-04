@@ -20,3 +20,19 @@ https://pythonbasics.org/webserver/
 https://anshu-dev.medium.com/creating-a-python-web-server-from-basic-to-advanced-449fcb38e93b
 https://www.datacamp.com/tutorial/tutorial-postgresql-python
 https://www.psycopg.org/docs/install.html#install-from-source
+
+
+
+Things to fix (if time):
+- View comment after posting without refreshing
+- Page for user posts and page for org posts
+- Orgs can make posts
+- Get timestamp for posts and comments and sort posts by timestamp
+- Create supply request
+
+
+Need to dos:
+- Finish image upload for create post
+- View supply requests page
+- Respond to supply requests
+- CSS for those pages

@@ -150,6 +150,7 @@ h1 {
     flex-direction: column;
     justify-content: space-between;
     row-gap: 30px;
+    width: 560px;
     margin-left: 25%;
     margin-right: 25%;
 
@@ -241,34 +242,77 @@ h1 {
     font-weight: normal;
 }
 
-.profile-title{
+.profile-title {
     text-align: center;
 }
 
 .profile-box {
-    border-radius: 8px; 
-    padding: 20px; 
-    margin: 20px auto; 
-    width: 80%; 
-    max-width: 600px; 
-    background-color: rgb(185, 185, 185); 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+    background-color: rgb(185, 185, 185);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
 .profile-box p {
-    font-size: 24px; 
+    font-size: 24px;
     line-height: 1.5;
-    margin: 8px 0; 
-    font-weight: bold; 
+    margin: 8px 0;
+    font-weight: bold;
 }
 
 .profile-box strong {
-    color: #251717; 
+    color: #251717;
     font-style: bold;
 }
 
 .centered-title {
-    text-align: center; 
-    margin-bottom: 20px; 
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+.create-post-btn {
+    text-decoration-line: none;
+    background-color: #6f7260;
+    color: white;
+    font-weight: bolder;
+    padding: 15px;
+    border-radius: 20px;
+    margin-left: 40px;
+    cursor: pointer;
+}
+
+.new-img {
+    width: 410px;
+    height: 410px;
+    object-fit: cover;
+}
+
+.create-comment {
+    padding: 20px;
+}
+
+.create-comment-label {
+    margin-left: 10px;
+}
+
+.create-comment-input {
+    width: 300px;
+    height: 50px;
+    padding: 20px;
+    border-radius: 15px;
+    text-wrap: wrap;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.create-comment-btn {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 20px;
 }
