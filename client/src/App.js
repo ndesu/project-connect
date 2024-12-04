@@ -6,6 +6,7 @@ import MapPage from "./pages/Map";
 import Events from "./pages/Events";
 import Profile from "./pages/Profile";
 import NewPost from "./pages/NewPost";
+import Supplies from "./pages/Supplies";
 import "./App.css"
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
                 <Route path="/map" element={<MapPage />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/events" element={<Events />} />
+                <Route path="/supplies" element={<Supplies />} />
                 <Route path="*" element={<div>404: Page Not Found</div>} />
             </Routes>
         </BrowserRouter>

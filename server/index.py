@@ -13,7 +13,7 @@ from db.models import create_and_seed
 sys.path.append("..")
 
 # Import database tables
-from db.models import events_table, maps_table, post_table, user_table
+from db.models import events_table, maps_table, post_table, requests_table, user_table
 
 # Local variables
 
@@ -47,6 +47,14 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             return
         if self.path == "/get_all_posts":
             response = post_table.get_all_posts(conn)
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+        elif self.path == "/get_all_requests":
+            response = requests_table.get_all_requests(conn)
+            print("resp: ", response)
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
@@ -92,7 +100,15 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.path = "../client/public/index.html"
         else:
             # If path received is '/', change to default path '/index.html'
-            if self.path in ("/", "/home", "/events", "/map", "/profile", "/newpost"):
+            if self.path in (
+                "/",
+                "/home",
+                "/events",
+                "/map",
+                "/profile",
+                "/newpost",
+                "/supplies",
+            ):
                 self.path = "../public/index.html"
             try:
                 extension = self.path[-3:]

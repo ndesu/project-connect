@@ -114,6 +114,7 @@ export default function NewPost() {
             <Header email={email} clientinfo={clientinfo} />
 
             <div>
+                Create a New Post
                 <form class="post-form" onSubmit={handlePostSubmit}>
                     <img class="new-img" src={imgURL} alt="default image" />
                     <div class="choose-img">
