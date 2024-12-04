@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "../App.css";
+import CreateEvent from "../components/createEvent";
 
 // fullName, email, password, location, rsvp
 
@@ -63,7 +64,7 @@ export default function Profile() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ type: "getOrgEventsInfo", orgID })
+                body: JSON.stringify({ type: "getOrgEventsInfo", userID })
             })
                 .then((response) => response.json())
                 .then((data) => {
@@ -173,6 +174,8 @@ export default function Profile() {
                     </p>
                 </div>
             )}
+            <CreateEvent orgID={clientinfo.clientid}/>
+            
         </div>
     );
 }

@@ -158,4 +158,16 @@ def get_org_events_info(conn, orgID):
 
     return eventinfo
 
+def create_event(conn, eventName, eventDescription, date, time, maxVolunteers, address, orgID):
+    cur = conn.cursor()
+
+    cur.execute("""INSERT INTO events 
+                (organizationID, eventname, eventdescription, eventtype, eventdate, eventtime, nummaxvolunteers, rsvps, locationid) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""", (orgID, eventName, eventDescription, 'Volunteer', date, time, maxVolunteers, 0, 1))
+    
+    print('inserted values')
+
+    cur.close()
+    conn.commit()
+
 

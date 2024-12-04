@@ -12,10 +12,10 @@ export default function MapPage() {
     const [eventMarkers, setEventMarkers] = useState([])
     const [supplyMarkers, setSupplyMarkers] = useState([])
     const [userLocation, setUserLocation] = useState(null)
-    const apiKey = 'AIzaSyAHfuaC6Xs3ld9E6ref8FKCxulfDaz2RkY'
+    const apiKey = ''
 
     const mapLocations = () => {
-        fetch("http://localhost:8080/map", {
+        fetch("http://localhost:8080/get_map", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -96,8 +96,8 @@ export default function MapPage() {
                     <APIProvider apiKey={apiKey}>
                         <Map
                             style={{ width: '100vw', height: '100vh' }}
-                            center={userLocation} // Use 'center' for dynamic updates
-                            zoom={10}
+                            defaultCenter={userLocation} // Use 'center' for dynamic updates
+                            defaultZoom={10}
                             options={{
                                 gestureHandling: 'greedy',
                                 disableDefaultUI: true,
