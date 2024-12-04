@@ -45,6 +45,7 @@ export default function Profile() {
             <h1 className="profile-title">Profile Page</h1>
             <br></br>
 
+            {/* see if org email or user email */}
             {/* {email ? <p>Welcome {email}!</p> : <p>You are not logged in</p>} */}
 
 
