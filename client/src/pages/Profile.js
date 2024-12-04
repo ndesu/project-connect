@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "../App.css";
 
-// fullName, email, password, location, rsvps
+// fullName, email, password, location, rsvp
 
 export default function Profile() {
     const location = useLocation();
@@ -99,63 +99,80 @@ export default function Profile() {
             {/* see if org email or user email */}
             {/* {email ? <p>Welcome {email}!</p> : <p>You are not logged in</p>} */}
 
-
             {/* first box with user information*/}
-            {profileData ? (
-                <div className="profile-box">
-                <p>
-                    <strong className="bold-text">User:</strong> <span className="normal-text">{profileData.fullName}</span>
-                </p>
-                <p>
-                    <strong className="bold-text">Located At:</strong> <span className="normal-text">{profileData.locatedAt}</span>
-                </p>
+            {clientinfo.clienttype === "user" ? (
+                // user profile
+                <div>
+                    <div className="profile-box">
+                        {profileData ? (
+                            <>
+                                <p>
+                                    <strong className="bold-text">User:</strong>{" "}
+                                    <span className="normal-text">{profileData.fullName}</span>
+                                </p>
+                                <p>
+                                    <strong className="bold-text">Located At:</strong>{" "}
+                                    <span className="normal-text">{profileData.locatedAt}</span>
+                                </p>
+                            </>
+                        ) : error ? (
+                            <p>Error loading profile data: {error}</p>
+                        ) : (
+                            <p>Loading profile data...</p>
+                        )}
+                    </div>
+
+                    {/* user events */}
+                    <br />
+                    <h2 className="centered-title">Events to Attend:</h2>
+                    <div className="profile-box">
+                        {userEvents.length > 0 ? (
+                            userEvents.map((event, index) => (
+                                <div className="event-listitem" key={index}>
+                                    <p>{event.eventName}</p>
+                                    <div className="datetime">
+                                        <p>on {event.date} at {event.time}</p>
+                                    </div>
+                                    <p>{event.address}</p>
+                                </div>
+                            ))
+                        ) : (
+                            <p>
+                                <span className="normal-text">You currently have not signed up for any events.</span>
+                            </p>
+                        )}
+                    </div>
                 </div>
-            ) : error ? (
-                <p>Error loading profile data: {error}</p>
             ) : (
-                <p>Loading profile data...</p>
+
+                // org profile
+                <div className="profile-box">
+                    <p>
+                        <strong className="bold-text">Organization Name:</strong>{" "}
+                        <span className="normal-text">{profileData?.organizationName}</span>
+                    </p>
+                    <p>
+                        <strong className="bold-text">Description:</strong>{" "}
+                        <span className="normal-text">{profileData?.orgDescription}</span>
+                    </p>
+                    <p>
+                        <strong className="bold-text">Email:</strong>{" "}
+                        <span className="normal-text">{profileData?.email}</span>
+                    </p>
+                    <p>
+                        <strong className="bold-text">Phone Number:</strong>{" "}
+                        <span className="normal-text">{profileData?.phoneNumber}</span>
+                    </p>
+                    <p>
+                        <strong className="bold-text">Located At:</strong>{" "}
+                        <span className="normal-text">{profileData?.locatedAt}</span>
+                    </p>
+                    <p>
+                        <strong className="bold-text">Total Events:</strong>{" "}
+                        <span className="normal-text">{profileData?.totalEvents}</span>
+                    </p>
+                </div>
             )}
-
-            {/* Events Section */}
-            <br></br>
-            <h2 className="centered-title">Events to Attend:</h2>
-            {clientinfo.clienttype == "user" ? 
-            <div class="user-profile-box">
-                {userEvents.length > 0 ? (
-                    userEvents.map((event, index) => (
-                        <div class="event-listitem" key={index}>
-                            <p>{event.eventName}</p>
-                            <div class="datetime">
-                                <p>on {event.date} at {event.time}</p>
-                            </div>
-                            <p>{event.address}</p>
-                        </div>
-                    ))
-                ) : (
-                    <p> 
-                        <span className="normal-text">You currently have not signed up for any events.</span>
-                    </p>
-                )}
-            </div> : 
-            <div>
-                {organizationEvents.length > 0 ? (
-                    organizationEvents.map((event, index) => (
-                        <div class="event-listitem" key={index}>
-                            <p>{event.eventName}</p>
-                            <div class="datetime">
-                                <p>on {event.date} at {event.time}</p>
-                            </div>
-                            <p>{event.address}</p>
-                        </div>
-                    ))
-                ) : (
-                    <p> 
-                        <span className="normal-text">You do not have any events planned.</span>
-                    </p>
-                )}
-            </div>}
         </div>
-
-
     );
 }

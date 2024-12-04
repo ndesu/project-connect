@@ -98,7 +98,7 @@ export default function Supplies() {
                         <div>{request.orgaddress}</div>
                         <div class="request-text">{request.itemname}</div>
                         <div class="request-descrip">{request.supplydescription}</div>
-                        <div class="request-quantity">{request.quantity}</div>
+                        <div class="request-quantity"><b>Quantity:</b> {request.quantity}</div>
 
                         {clientinfo ?
                             <div>
@@ -110,8 +110,8 @@ export default function Supplies() {
                                 </form>
                             </div>
                             :
-                            <div>
-                                Login to fulfill supply requests.
+                            <div class="fulfill-form">
+                                <i>Login to fulfill supply requests.</i>
                             </div>
                         }
                     </div>

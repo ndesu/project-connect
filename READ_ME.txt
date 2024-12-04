@@ -25,10 +25,11 @@ https://www.psycopg.org/docs/install.html#install-from-source
 
 Things to fix (if time):
 - View comment after posting without refreshing
+- View donation after submitting without refreshing
 - Page for user posts and page for org posts
 - Orgs can make posts
 - Get timestamp for posts and comments and sort posts by timestamp
-- Create supply request
+- Make it so when you type comment or supply request it doesn't type it into all of them
 
 
 Need to dos:
