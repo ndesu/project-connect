@@ -12,6 +12,7 @@ export default function Supplies() {
     email ? console.log(email) : console.log("no email :(")
 
     const [allRequests, setAllRequests] = useState([])
+    const [fulfillData, setFulfillData] = useState(0)
 
     const get_request_data = async () => {
         try {
@@ -23,6 +24,47 @@ export default function Supplies() {
             setAllRequests(all_requests_data)
         } catch (error) {
             console.log(error.message);
+        }
+    }
+
+    const handleFulfillChange = (e) => {
+        const { value } = e.target;
+        setFulfillData(value);
+    }
+
+    const handleFulfillSubmit = (e, linkedreqid) => {
+        e.preventDefault();
+        if (fulfillData == 0) {
+            console.log("No fulfill data");
+        } else {
+            console.log("Handling FulFill Submit...");
+            let fulfill = {
+                numdonate: fulfillData,
+                requestid: linkedreqid,
+                userid: clientinfo.clientid
+            }
+
+            fetch("http://localhost:8080", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ type: "fulfillReq", ...fulfill }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Fulfill Req response:", data);
+                    if (data.status === "success") {
+                        alert("Success! Refresh to view change.")
+                        navigate('/supplies', { state: { email: clientinfo.email, clientinfo: clientinfo } })
+                    } else {
+                        alert("Fulfill Request failed")
+                    }
+                    setFulfillData(0);
+                })
+                .catch((error) => {
+                    console.error("Error during request fulfill:", error);
+                });
         }
     }
 
@@ -57,6 +99,21 @@ export default function Supplies() {
                         <div class="request-text">{request.itemname}</div>
                         <div class="request-descrip">{request.supplydescription}</div>
                         <div class="request-quantity">{request.quantity}</div>
+
+                        {clientinfo ?
+                            <div>
+                                <form class="fulfill-form" onSubmit={(e, requestid) => handleFulfillSubmit(e, request.requestid)}>
+                                    <label class="fulfill-label" htmlFor="commenttext">How many will you donate?</label>
+                                    <div></div>
+                                    <input class="fulfill-input" type="number" name="commenttext" value={fulfillData} onChange={handleFulfillChange} />
+                                    <button type="submit" class="fulfill-btn">Submit</button>
+                                </form>
+                            </div>
+                            :
+                            <div>
+                                Login to fulfill supply requests.
+                            </div>
+                        }
                     </div>
                 )
             })}

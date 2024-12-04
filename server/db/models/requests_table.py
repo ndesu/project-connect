@@ -15,8 +15,6 @@ def get_all_requests(conn):
 
     all_requests_arr = cur.fetchall()
 
-    print("all req arr: ", all_requests_arr)
-
     all_requests_data = []
 
     for req in all_requests_arr:
@@ -40,8 +38,6 @@ def get_all_requests(conn):
 
     all_location_arr = cur.fetchall()
 
-    print("all loc arr: ", all_location_arr)
-
     all_location_data = {}
 
     for row in all_location_arr:
@@ -53,9 +49,36 @@ def get_all_requests(conn):
         all_location_data[loc["requestid"]] = loc
 
     for req in all_requests_data:
+        numdonations = 0
+        cur.execute(
+            """SELECT quantityfulfilled FROM fulfillrequest WHERE requestid = %s""",
+            (req["requestid"],),
+        )
+        alldonations = cur.fetchall()
+        for donation in alldonations:
+            print("donation: ", donation)
+            numdonations += donation[0]
+
+        req["quantity"] -= numdonations
+
         if req["requestid"] in all_location_data:
             req["locationid"] = all_location_data[req["requestid"]]["locationid"]
             req["orgaddress"] = all_location_data[req["requestid"]]["orgaddress"]
 
     cur.close()
     return all_requests_data
+
+
+def fulfillRequest(conn, numdonations, requestid, userid):
+    cur = conn.cursor()
+
+    current_time = datetime.datetime.now()
+
+    cur.execute(
+        """INSERT INTO fulfillrequest (requestid, userid, quantityfulfilled, datefulfilled) VALUES (%s, %s, %s, %s)
+        """,
+        (requestid, userid, numdonations, current_time),
+    )
+
+    conn.commit()
+    cur.close()

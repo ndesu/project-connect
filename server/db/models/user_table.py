@@ -83,7 +83,7 @@ def get_client(conn, email):
 
     client_info = {}
 
-    cur.execute("""SELECT * FROM users WHERE email = %s""", (email, ))
+    cur.execute("""SELECT * FROM users WHERE email = %s""", (email,))
     user = cur.fetchone()
     print("\n\nUser: ", user)
     if user:
@@ -103,22 +103,25 @@ def get_client(conn, email):
 
     return client_info
 
+
 def get_all_profile(conn):
-     cur = conn.cursor()
+    cur = conn.cursor()
 
-     cur.execute(
-         """SELECT users.fullName, users.email, users.locatedat, users.rsvps FROM users"""
-     )
-     all_profile_arr = cur.fetchall()
-     all_profile_data = []
+    cur.execute(
+        """SELECT users.fullName, users.email, users.locatedat, users.rsvps FROM users"""
+    )
+    all_profile_arr = cur.fetchall()
+    all_profile_data = []
 
-     for profile in all_profile_arr:
-         all_profile_data.append({
-             "fullName": profile[0],
-             "email": profile[1],
-             "locatedAt": profile[2],
-             "rsvps": profile[3]
-         })
+    for profile in all_profile_arr:
+        all_profile_data.append(
+            {
+                "fullName": profile[0],
+                "email": profile[1],
+                "locatedAt": profile[2],
+                "rsvps": profile[3],
+            }
+        )
 
-     cur.close()
-     return all_profile_data
+    cur.close()
+    return all_profile_data

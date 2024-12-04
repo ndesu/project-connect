@@ -23,11 +23,11 @@ def create_tables(conn):
     #     print("\n\nERROR CREATING TABLES: ", e)
 
     # # ------ INSERT SEED DATA INTO TABLES ------
-    print("Inserting into tables...")
-    try:
-        cur.execute(open("server/db/models/inserts.sql", "r").read())
-    except Exception as e:
-        print("\n\nERROR EXECUTING INSERTS: ", e)
+    # print("Inserting into tables...")
+    # try:
+    #     cur.execute(open("server/db/models/inserts.sql", "r").read())
+    # except Exception as e:
+    #     print("\n\nERROR EXECUTING INSERTS: ", e)
 
     # Make the changes to the database persistent
     conn.commit()

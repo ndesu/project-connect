@@ -19,8 +19,8 @@ from db.models import events_table, maps_table, post_table, requests_table, user
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "adriaorenstein"
-DB_PASSWORD = "pg-adria"
+DB_USERNAME = "USERNAME"
+DB_PASSWORD = "PASSWORD"
 
 # ---------- CONNECT TO SERVER ----------
 
@@ -54,7 +54,6 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         elif self.path == "/get_all_requests":
             response = requests_table.get_all_requests(conn)
-            print("resp: ", response)
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
@@ -279,6 +278,19 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             response = {
                 "message": "Post created successfully",
+                "status": "success",
+            }
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+        elif data["type"] == "fulfillReq":
+            requests_table.fulfillRequest(
+                conn, data["numdonate"], data["requestid"], data["userid"]
+            )
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            response = {
+                "message": "Fulfilled request successfully",
                 "status": "success",
             }
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
