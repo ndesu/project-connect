@@ -130,4 +130,44 @@ def get_user_events_info(conn, user_id):
 
     return eventinfo
 
+def get_org_events_info(conn, orgID):
+    cur = conn.cursor()
+
+    cur.execute("""
+                SELECT * FROM organizations WHERE organizationid=%s""", (orgID,))
     
+    info = cur.fetchall()
+    eventinfo = []
+    for e in info:
+        e = {
+            "eventid": e[0],
+            "eventName": e[2],
+            "date": str(e[5]),
+            "time": str(e[6]),
+            "locationid": e[9]
+        }
+
+        cur.execute("""SELECT orgaddress FROM maplocation WHERE locationid=%s""", (info["locationid"],))
+        address = cur.fetchone()
+        e["address"] = address[0]
+
+        eventinfo.append(e)
+    
+    cur.close()
+    conn.commit()
+
+    return eventinfo
+
+def create_event(conn, eventName, eventDescription, date, time, maxVolunteers, address, orgID):
+    cur = conn.cursor()
+
+    cur.execute("""INSERT INTO events 
+                (organizationID, eventname, eventdescription, eventtype, eventdate, eventtime, nummaxvolunteers, rsvps, locationid) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""", (orgID, eventName, eventDescription, 'Volunteer', date, time, maxVolunteers, 0, 1))
+    
+    print('inserted values')
+
+    cur.close()
+    conn.commit()
+
+

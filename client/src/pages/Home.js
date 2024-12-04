@@ -32,7 +32,7 @@ export default function Home() {
     // Anything in the useEffect function will ONLY be called when the component is first loaded (otherwise it will continuously call get_post_data())
     useEffect(() => {
         get_post_data()
-    }, [])
+    }, [commentData])
 
     let src_path = ``;
 
@@ -74,8 +74,7 @@ export default function Home() {
                 .then((data) => {
                     console.log("Create comment response:", data);
                     if (data.status === "success") {
-                        alert("Success! Refresh to view comment.")
-                        navigate('/home', { state: { email: clientinfo.email, clientinfo: clientinfo } })
+                        console.log("Successfully posted your comment!")
                     } else {
                         alert("Create Comment Failed")
                     }

@@ -84,7 +84,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
 
-        elif self.path == "/map":
+        elif self.path == "/get_map":
             locations = maps_table.get_map_locations(conn)
             print(locations)
             try:

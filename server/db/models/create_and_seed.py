@@ -8,7 +8,7 @@ def create_tables(conn):
     cur = conn.cursor()
     # Execute a command: create datacamp_courses table
 
-    # ------ DELETE ALL TABLES ------
+    # # ------ DELETE ALL TABLES ------
     # print("Deleting tables...")
     # try:
     #     cur.execute(open("server/db/models/delete.sql", "r").read())
