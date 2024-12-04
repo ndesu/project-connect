@@ -12,9 +12,11 @@ export default function Profile() {
     const email = location.state?.email;
     const fullName = location.state?.fullName;
     const clientinfo = location.state?.clientinfo || {};
+    const userID = clientinfo.clientid
 
     const [profileData, setProfileData] = useState(null);
     const [error, setError] = useState(null);
+    const [userEvents, setUserEvents] = useState([])
 
     const get_profile_data = async () => {
         try {
@@ -31,10 +33,32 @@ export default function Profile() {
         }
     };
 
+    const fetchUserEvents = async() => {
+        console.log(userID)
+        try {
+            fetch("http://localhost:8080", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ type: "getUserEventsInfo", userID })
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    setUserEvents(data)
+                })
+        } catch (err) {
+            console.error("Error fetching user events:", err)
+            setError(err.message)
+        }
+         
+    }
+
     useEffect(() => {
         if (email) {
             get_profile_data();
         }
+        fetchUserEvents();
     }, [email]); 
     
     console.log(profileData)
@@ -71,12 +95,15 @@ export default function Profile() {
             <br></br>
             <h2 className="centered-title">Events to Attend:</h2>
             <div className="profile-box">
-                {profileData?.eventsToAttend?.length > 0 ? (
-                    profileData.eventsToAttend.map((event, index) => (
-                        <p key={index}>
-                            <strong className="bold-text">Event:</strong>{" "}
-                            <span className="normal-text">{event.name}</span>
-                        </p>
+                {userEvents.length > 0 ? (
+                    userEvents.map((event, index) => (
+                        <div class="event-listitem" key={index}>
+                            <p>{event.eventName}</p>
+                            <div class="datetime">
+                                <p>on {event.date} at {event.time}</p>
+                            </div>
+                            <p>{event.address}</p>
+                        </div>
                     ))
                 ) : (
                     <p> 

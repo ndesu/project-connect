@@ -342,6 +342,14 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 "status": "success",
             }
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
+        
+        elif data["type"] == "getUserEventsInfo":
+            response = events_table.get_user_events_info(conn, data['userID'])
+            print(response)
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
 
 
 # Create web server
