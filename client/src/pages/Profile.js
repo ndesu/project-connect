@@ -37,6 +37,8 @@ export default function Profile() {
         }
     }, [email]); 
     
+    console.log(profileData)
+
     return (
         <div>
             <Header email={email} clientinfo={clientinfo} fullName={fullName} />

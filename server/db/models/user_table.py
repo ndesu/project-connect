@@ -109,6 +109,7 @@ def get_all_profile(conn):
      cur.execute(
          """SELECT users.fullName, users.email, users.locatedat, users.rsvps FROM users"""
      )
+
      all_profile_arr = cur.fetchall()
      all_profile_data = []
 
