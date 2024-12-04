@@ -19,8 +19,8 @@ from db.models import events_table, maps_table, post_table, user_table
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "USERNAME"
-DB_PASSWORD = "PASSWORD"
+DB_USERNAME = "adriaorenstein"
+DB_PASSWORD = "pg-adria"
 
 # ---------- CONNECT TO SERVER ----------
 
