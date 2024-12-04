@@ -12,7 +12,7 @@ export default function MapPage() {
     const [eventMarkers, setEventMarkers] = useState([])
     const [supplyMarkers, setSupplyMarkers] = useState([])
     const [userLocation, setUserLocation] = useState(null)
-    const apiKey = ''
+    const apiKey = 'AIzaSyAHfuaC6Xs3ld9E6ref8FKCxulfDaz2RkY'
 
     const mapLocations = () => {
         fetch("http://localhost:8080/get_map", {

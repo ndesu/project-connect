@@ -157,7 +157,6 @@ export default function Profile() {
                 </div>
             ) : (
                 <div>
-                // org profile
                     <div className="profile-box">
                         <p>
                             <strong className="bold-text">Organization Name:</strong>{" "}
