@@ -20,8 +20,12 @@ INSERT INTO MapLocation (Longitude, Latitude, OrgAddress) VALUES
     (-105.264924, 40.022114, '2344 Spruce St, Boulder, CO');
 
 INSERT INTO Events (OrganizationID, EventName, EventDescription, EventType, EventDate, EventTime, NumMaxVolunteers, RSVPs, LocationID) VALUES
-    (1, 'Charity1 Event Name', 'Charity1 Event Description.', 'Donation', '2024-11-01', '10:00:00', 50, 30, 1),
-    (2, 'Charity2 Event Name', 'Charity2 Event Description.', 'Volunteer', '2024-11-02', '09:00:00', 20, 15, 2);
+    (1, 'Annual Canned Food Drive', 'Every year we run a canned food drive to collect soup, vegetables, and more to share with the community. Join us in a day-long event to celebrate all of your donations. Be sure to bring your donations with you!', 'Donation', '2024-11-01', '10:00:00', 50, 30, 1),
+    (2, 'Park Clean-Up', 'We are organizing an event to bring everybody together to clean up the local park. Bring your gloves and water. After the clean-up we will all celebrate with snacks on the pavillion, donated by Delicious Subs on Main Street.', 'Volunteer', '2024-11-02', '09:00:00', 20, 15, 2),
+    (3, 'Money for Mice', 'We have a new batch of rescue mice coming into our facility so we are hoping to raise money to take care of them. If you or anyone you know loves adorable, little animals, please stop by our event to enjoy some refreshments and learn about mice. Kids welcome!', 'Donation', '2024-11-04', '13:00:00', 10, 8, 3),
+    (4, 'Orca Information Session', 'The most important part of conservation is education. Come learn about the beautiful animals that live in our harbor and consider donating to save these creatures.', 'Donation', '2024-11-06', '15:00:00', 25, 40, 4),
+    (5, 'Holiday Party', 'We are hosting a holiday party for the residents at Colorado Shelters United. If you are interested in volunteering, we are looking for people to serve food, host activities, and pass out presents. Plenty of fun will be had for all!', 'Volunteer', '2024-11-08', '19:30:00', 15, 4, 5),
+    (2, 'Plant a Tree', 'Have you ever wanted to plant a tree? Come connect with nature and make our planet a better place. We will provide the saplings and shovels, just come with your gardening gloves and a positive attitude!', 'Volunteer', '2024-11-15', '10:45:00', 50, 36, 2);
 
 INSERT INTO Posts (UserID, PostImage, TimeOfPost, PostText) VALUES
     (1, 'food.jpg', '2024-11-03 14:30:00', 'Just had an awesome afternoon serving lunch to my good friends at Rosie''s Place! It''s always so nice to give people a hot meal, especially with the cold weather. They''re always looking for volunteers so make sure to stop by sometime.'),
