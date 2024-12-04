@@ -20,8 +20,8 @@ from db.models import events_table, maps_table, post_table, requests_table, user
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "xenamaldonado"
-DB_PASSWORD = "password"
+DB_USERNAME = "adriaorenstein"
+DB_PASSWORD = "pg-adria"
 
 # ---------- CONNECT TO SERVER ----------
 
@@ -342,9 +342,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 "status": "success",
             }
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
-        
+
         elif data["type"] == "getUserEventsInfo":
-            response = events_table.get_user_events_info(conn, data['userID'])
+            response = events_table.get_user_events_info(conn, data["userID"])
             print(response)
             self.send_response(200)
             self.send_header("Content-type", "application/json")
