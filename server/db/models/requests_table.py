@@ -2,6 +2,7 @@ import datetime
 import psycopg2
 import requests
 import urllib.parse
+from db.models import lat_and_lng
 
 
 def get_all_requests(conn):

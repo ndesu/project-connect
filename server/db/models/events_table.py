@@ -137,7 +137,7 @@ def get_org_events_info(conn, orgID):
     cur = conn.cursor()
 
     cur.execute("""
-                SELECT * FROM organizations WHERE organizationid=%s""", (orgID,))
+                SELECT * FROM events WHERE organizationid=%s""", (orgID,))
     
     info = cur.fetchall()
     eventinfo = []
@@ -150,7 +150,7 @@ def get_org_events_info(conn, orgID):
             "locationid": e[9]
         }
 
-        cur.execute("""SELECT orgaddress FROM maplocation WHERE locationid=%s""", (info["locationid"],))
+        cur.execute("""SELECT orgaddress FROM maplocation WHERE locationid=%s""", (e["locationid"],))
         address = cur.fetchone()
         e["address"] = address[0]
 
