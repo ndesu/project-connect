@@ -107,12 +107,12 @@ def get_client(conn, email):
 def get_all_profile(conn):
     cur = conn.cursor()
 
-     cur.execute(
-         """SELECT users.fullName, users.email, users.locatedat, users.rsvps FROM users"""
-     )
+    cur.execute(
+        """SELECT users.fullName, users.email, users.locatedat, users.rsvps FROM users"""
+    )
 
-     all_profile_arr = cur.fetchall()
-     all_profile_data = []
+    all_profile_arr = cur.fetchall()
+    all_profile_data = []
 
     for profile in all_profile_arr:
         all_profile_data.append(
