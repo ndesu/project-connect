@@ -74,7 +74,7 @@ export default function Home() {
                 .then((data) => {
                     console.log("Create comment response:", data);
                     if (data.status === "success") {
-                        alert("Successfully posted your comment!")
+                        console.log("Successfully posted your comment!")
                     } else {
                         alert("Create Comment Failed")
                     }
