@@ -14,7 +14,7 @@ def create_new_user(conn, email, password, fullName, location):
     cur = conn.cursor()
 
     # check username
-    cur.execute("SELECT * FROM users WHERE email = %s", (email,))
+    cur.execute("""SELECT * FROM users WHERE email = %s""", (email,))
     existing_user = cur.fetchone()
 
     if existing_user:
@@ -110,7 +110,7 @@ def get_all_profile(conn):
     #  user
     cur.execute(
         """
-                SELECT users.fullName, users.email, users.locatedat, users.rsvpss 
+                SELECT users.fullName, users.email, users.locatedat, users.rsvps 
                 FROM users"""
     )
     all_profile_arr = cur.fetchall()
@@ -129,7 +129,7 @@ def get_all_profile(conn):
     # organization
     cur.execute(
         """
-        SELECT organizations.organizationName, organizations.orgdescription, organizations.email, organizations.phonenumber, organizations..locatedat, organizations.totalevents
+        SELECT organizations.organizationName, organizations.orgdescription, organizations.email, organizations.phonenumber, organizations.locatedat, organizations.totalevents
         FROM organizations
     """
     )

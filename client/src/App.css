@@ -629,3 +629,20 @@ h1 {
     border-radius: 10px;
     padding: 10px 0;
 }
+
+.create-event-container, .create-request-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-event-container h1, .create-request-container h1{
+    cursor: pointer;
+    padding: 10px;
+    border: solid black 2px;
+    margin: 10px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+}

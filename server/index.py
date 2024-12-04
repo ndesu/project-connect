@@ -21,7 +21,7 @@ from db.models import events_table, maps_table, post_table, requests_table, user
 hostName = "localhost"
 serverPort = 8080
 DB_USERNAME = "username"
-DB_PASSWORD = "password"
+DB_PASSWORD = "#NDpc3703"
 
 # ---------- CONNECT TO SERVER ----------
 
@@ -350,7 +350,27 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
-
+        
+        elif data["type"] == "createEvent":
+            events_table.create_event(conn, data["orgID"], data["eventName"], data["eventDescription"], data["date"], data["time"], data["maxVolunteers"], data["address"])
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            response = {
+                "message": "Fulfilled request successfully",
+                "status": "success",
+            }
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+        elif data["type"] == "createRequest":
+            requests_table.create_request(conn, data["orgID"], data["itemName"], data["quantity"], data["supplyDesctiption"], data["address"])
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            response = {
+                "message": "Fulfilled request successfully",
+                "status": "success",
+            }
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
 
 # Create web server
 webServer = HTTPServer((hostName, serverPort), SimpleHTTPRequestHandler)

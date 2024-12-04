@@ -1,6 +1,9 @@
 import hashlib
 
 import psycopg2
+import requests
+import urllib.parse
+from db.models import lat_and_lng
 
 # WORKING
 
@@ -158,16 +161,23 @@ def get_org_events_info(conn, orgID):
 
     return eventinfo
 
-def create_event(conn, eventName, eventDescription, date, time, maxVolunteers, address, orgID):
+def create_event(conn, orgID, eventName, eventDescription, date, time, maxVolunteers, location):
     cur = conn.cursor()
+
+    coords = lat_and_lng.get_lat_and_lng(location)
+    lat, lon = coords[0], coords[1]
+
+    cur.execute("""INSERT INTO maplocation (longitude, latitude, orgaddress) 
+                VALUES (%s, %s, %s)""", (lon, lat, location))
+    
+    cur.execute("""SELECT locationid FROM maplocation WHERE orgaddress=%s""", (location,))
+    locID = cur.fetchone()[0]
 
     cur.execute("""INSERT INTO events 
                 (organizationID, eventname, eventdescription, eventtype, eventdate, eventtime, nummaxvolunteers, rsvps, locationid) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""", (orgID, eventName, eventDescription, 'Volunteer', date, time, maxVolunteers, 0, 1))
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""", (orgID, eventName, eventDescription, 'Volunteer', date, time, maxVolunteers, 0, locID))
     
     print('inserted values')
 
     cur.close()
     conn.commit()
-
-

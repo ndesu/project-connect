@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "../App.css";
 import CreateEvent from "../components/createEvent";
+import CreateSupplyRequest from "../components/createSupplyRequest";
 
 // fullName, email, password, location, rsvp
 
@@ -19,6 +20,8 @@ export default function Profile() {
     const [error, setError] = useState(null);
     const [userEvents, setUserEvents] = useState([])
     const [organizationEvents, setOrganizationEvents] = useState([])
+    const [createEventToggle, setCreateEventToggle] = useState(false)
+    const [createRequestToggle, setCreateRequestToggle] = useState(false)
 
     const get_profile_data = async () => {
         try {
@@ -76,6 +79,14 @@ export default function Profile() {
         }
          
     }
+
+    const toggleCreateEvent = () => [
+        setCreateEventToggle(!createEventToggle)
+    ]
+
+    const toggleCreateRequest = () => [
+        setCreateRequestToggle(!createRequestToggle)
+    ]
 
     
 
@@ -145,37 +156,47 @@ export default function Profile() {
                     </div>
                 </div>
             ) : (
-
+                <div>
                 // org profile
-                <div className="profile-box">
-                    <p>
-                        <strong className="bold-text">Organization Name:</strong>{" "}
-                        <span className="normal-text">{profileData?.organizationName}</span>
-                    </p>
-                    <p>
-                        <strong className="bold-text">Description:</strong>{" "}
-                        <span className="normal-text">{profileData?.orgDescription}</span>
-                    </p>
-                    <p>
-                        <strong className="bold-text">Email:</strong>{" "}
-                        <span className="normal-text">{profileData?.email}</span>
-                    </p>
-                    <p>
-                        <strong className="bold-text">Phone Number:</strong>{" "}
-                        <span className="normal-text">{profileData?.phoneNumber}</span>
-                    </p>
-                    <p>
-                        <strong className="bold-text">Located At:</strong>{" "}
-                        <span className="normal-text">{profileData?.locatedAt}</span>
-                    </p>
-                    <p>
-                        <strong className="bold-text">Total Events:</strong>{" "}
-                        <span className="normal-text">{profileData?.totalEvents}</span>
-                    </p>
+                    <div className="profile-box">
+                        <p>
+                            <strong className="bold-text">Organization Name:</strong>{" "}
+                            <span className="normal-text">{profileData?.organizationName}</span>
+                        </p>
+                        <p>
+                            <strong className="bold-text">Description:</strong>{" "}
+                            <span className="normal-text">{profileData?.orgDescription}</span>
+                        </p>
+                        <p>
+                            <strong className="bold-text">Email:</strong>{" "}
+                            <span className="normal-text">{profileData?.email}</span>
+                        </p>
+                        <p>
+                            <strong className="bold-text">Phone Number:</strong>{" "}
+                            <span className="normal-text">{profileData?.phoneNumber}</span>
+                        </p>
+                        <p>
+                            <strong className="bold-text">Located At:</strong>{" "}
+                            <span className="normal-text">{profileData?.locatedAt}</span>
+                        </p>
+                        <p>
+                            <strong className="bold-text">Total Events:</strong>{" "}
+                            <span className="normal-text">{profileData?.totalEvents}</span>
+                        </p>
+                    </div>
+                    <div class="create-event-container">
+                        <h1 onClick={toggleCreateEvent}>Create Event</h1>
+                        {createEventToggle && <CreateEvent orgID={clientinfo.clientid}/>}
+                    </div>
+                    <div class="create-request-container">
+                        <h1 onClick={toggleCreateRequest}>Create Request</h1>
+                        {createRequestToggle && <CreateSupplyRequest orgID={clientinfo.clientid}/>}
+                    </div>
                 </div>
+                
             )}
-            <CreateEvent orgID={clientinfo.clientid}/>
             
+
         </div>
     );
 }
