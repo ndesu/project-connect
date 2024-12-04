@@ -100,7 +100,6 @@ export default function Events() {
         if(clientinfo.clienttype === "user") fetchUserEvents()
     }, []);
 
-    console.log(userEvents)
 
     return (
         <div>
@@ -124,19 +123,21 @@ export default function Events() {
                             <p><strong>RSVPs:</strong> {event.rsvps}</p>
                             <p><strong>Organization:</strong> {event.organizationName}</p>
                             <p><strong>Location:</strong> {event.location}</p>
-                            {userEvents.includes(event.eventID) ? 
-                            (<button
-                                class="cancel-button"
-                                onClick={() => handleCancelRSVP(event.eventID)}>
-                                Cancel RSVP
-                            </button>) :
-                            (<button
-                                className="register-button"
-                                onClick={() => handleRegisterClick(event.eventID)}
-                            >
-                                Register
-                            </button>)
-                            }
+                            {clientinfo.clienttype === "user" && (<div>
+                                {userEvents.includes(event.eventID) ? 
+                                (<button
+                                    class="cancel-button"
+                                    onClick={() => handleCancelRSVP(event.eventID)}>
+                                    Cancel RSVP
+                                </button>) :
+                                (<button
+                                    className="register-button"
+                                    onClick={() => handleRegisterClick(event.eventID)}
+                                >
+                                    Register
+                                </button>)
+                                }
+                            </div>)}
                         </div>
                     ))
                 )}

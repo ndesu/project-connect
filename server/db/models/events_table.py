@@ -177,6 +177,8 @@ def create_event(conn, orgID, eventName, eventDescription, date, time, maxVolunt
                 (organizationID, eventname, eventdescription, eventtype, eventdate, eventtime, nummaxvolunteers, rsvps, locationid) 
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""", (orgID, eventName, eventDescription, 'Volunteer', date, time, maxVolunteers, 0, locID))
     
+    cur.execute("""UPDATE organizations SET totalevents = totalevents + 1""")
+    
     print('inserted values')
 
     cur.close()
