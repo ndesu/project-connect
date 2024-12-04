@@ -114,7 +114,7 @@ export default function NewPost() {
             <Header email={email} clientinfo={clientinfo} />
 
             <div>
-                Create a New Post
+                {/* <div class="post-header">Create a New Post</div> */}
                 <form class="post-form" onSubmit={handlePostSubmit}>
                     <img class="new-img" src={imgURL} alt="default image" />
                     <div class="choose-img">
@@ -128,7 +128,7 @@ export default function NewPost() {
                             type="text" name="posttext" value={postData.posttext} onChange={handlePostChange} />
                     </div>
 
-                    <div class="postbtn"><button type="submit">Create Post</button></div>
+                    <div><button class="postbtn" type="submit">Create Post</button></div>
                 </form>
             </div>
         </div>

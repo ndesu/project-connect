@@ -21,13 +21,16 @@ export default function Header({ email, clientinfo }) {
 
                 <ul class="rightSide">
                     <li>
+                        <a class="navButton" onClick={() => handleNavButtonSubmit('/map')}>HOME</a>
+                    </li>
+                    <li>
                         <a class="navButton" onClick={() => handleNavButtonSubmit('/map')}>MAP</a>
                     </li>
                     <li>
                         <a class="navButton" onClick={() => handleNavButtonSubmit('/events')}>EVENTS</a>
                     </li>
                     <li>
-                        <a class="navButton" onClick={() => handleNavButtonSubmit('/supplies')}>SUPPLY REQUESTS</a>
+                        <a class="navButton" onClick={() => handleNavButtonSubmit('/supplies')}>SUPPLIES</a>
                     </li>
                     <li>
                         <a class="navButton" onClick={() => handleNavButtonSubmit('/profile')}>PROFILE</a>
