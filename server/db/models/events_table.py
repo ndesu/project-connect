@@ -90,3 +90,44 @@ def cancel_rsvp(conn, event_id, user_id):
 
 
     return rsvps
+
+def get_user_events_info(conn, user_id):
+    rsvps = get_user_events(conn, user_id)
+    eventids = []
+    for r in rsvps:
+        eventids.append(r[2])
+
+    cur = conn.cursor()
+    
+    eventinfo = []
+    for e in eventids:
+        cur.execute("""
+                    SELECT * FROM Events WHERE eventid=%s
+                    """, (e,))
+        info = cur.fetchone()
+        info = {
+            "eventID": info[0],
+            "organizationID": info[1],
+            "eventName": info[2],
+            "eventDescription": info[3],
+            "eventtype": info[4],
+            "date": str(info[5]),
+            "time": str(info[6]),
+            "maxVolunteers": info[7],
+            "rsvps": info[8],
+            "locationid": info[9]
+        }
+
+        cur.execute("""SELECT orgaddress FROM maplocation WHERE locationid=%s""", (info["locationid"],))
+        address = cur.fetchone()
+        info["address"] = address[0] 
+
+        eventinfo.append(info)
+
+
+    cur.close()
+    conn.commit()
+
+    return eventinfo
+
+    

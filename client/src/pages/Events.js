@@ -124,7 +124,6 @@ export default function Events() {
                             <p><strong>RSVPs:</strong> {event.rsvps}</p>
                             <p><strong>Organization:</strong> {event.organizationName}</p>
                             <p><strong>Location:</strong> {event.location}</p>
-                            <p>{event.eventID}</p>
                             {userEvents.includes(event.eventID) ? 
                             (<button
                                 class="cancel-button"
