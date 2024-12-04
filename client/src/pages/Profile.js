@@ -31,14 +31,14 @@ export default function Profile() {
             }
             const data = await response.json();
             const userProfile = data.find(profile => profile.email === email);
-            setProfileData(userProfile || null); 
+            setProfileData(userProfile || null);
         } catch (err) {
             console.error("Error fetching profile data:", err);
             setError(err.message);
         }
     };
 
-    const fetchUserEvents = async() => {
+    const fetchUserEvents = async () => {
         console.log(userID)
         try {
             fetch("http://localhost:8080", {
@@ -56,10 +56,10 @@ export default function Profile() {
             console.error("Error fetching user events:", err)
             setError(err.message)
         }
-         
+
     }
 
-    const fetchOrgEvents = async() => {
+    const fetchOrgEvents = async () => {
         console.log(userID)
         try {
             fetch("http://localhost:8080", {
@@ -77,7 +77,7 @@ export default function Profile() {
             console.error("Error fetching org events:", err)
             setError(err.message)
         }
-         
+
     }
 
     const toggleCreateEvent = () => [
@@ -88,17 +88,17 @@ export default function Profile() {
         setCreateRequestToggle(!createRequestToggle)
     ]
 
-    
+
 
     useEffect(() => {
         if (email) {
             get_profile_data();
         }
-        if(clientinfo.clienttype === "user") {
+        if (clientinfo.clienttype === "user") {
             fetchUserEvents();
-        } else {fetchOrgEvents()}
-    }, [email]); 
-    
+        } else { fetchOrgEvents() }
+    }, [email]);
+
     console.log(profileData)
 
     return (
@@ -139,8 +139,8 @@ export default function Profile() {
                     <br />
                     <h2 className="centered-title">Events to Attend:</h2>
                     <div className="profile-box">
-                        {organizationEvents.length > 0 ? (
-                            organizationEvents.map((event, index) => (
+                        {userEvents.length > 0 ? (
+                            userEvents.map((event, index) => (
                                 <div className="event-listitem" key={index}>
                                     <p>{event.eventName}</p>
                                     <div className="datetime">
@@ -186,11 +186,11 @@ export default function Profile() {
                     </div>
                     <div class="create-event-container">
                         <h1 onClick={toggleCreateEvent}>Create Event</h1>
-                        {createEventToggle && <CreateEvent orgID={clientinfo.clientid}/>}
+                        {createEventToggle && <CreateEvent orgID={clientinfo.clientid} />}
                     </div>
                     <div class="create-request-container">
                         <h1 onClick={toggleCreateRequest}>Create Request</h1>
-                        {createRequestToggle && <CreateSupplyRequest orgID={clientinfo.clientid}/>}
+                        {createRequestToggle && <CreateSupplyRequest orgID={clientinfo.clientid} />}
                     </div>
                     <div className="profile-box">
                         {organizationEvents.length > 0 ? (
@@ -210,9 +210,9 @@ export default function Profile() {
                         )}
                     </div>
                 </div>
-                
+
             )}
-            
+
 
         </div>
     );

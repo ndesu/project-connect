@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function CreateEvent({ orgID }) {
-    const apiKey = ''
+    const apiKey = 'AIzaSyAHfuaC6Xs3ld9E6ref8FKCxulfDaz2RkY'
     const [createEventData, setCreateEventData] = useState({
         orgID: orgID,
         eventName: "",
@@ -25,13 +25,13 @@ export default function CreateEvent({ orgID }) {
 
     const handleFormChange = (e) => {
         const { name, value } = e.target;
-        setCreateEventData({...createEventData, [name]: value })
+        setCreateEventData({ ...createEventData, [name]: value })
     }
 
     const handleCreateEventSubmit = (e) => {
         e.preventDefault();
-        
-        if(!checkFields(createEventData)) {
+
+        if (!checkFields(createEventData)) {
             alert("Enter All Information Before Submitting")
         } else {
             fetch("http://localhost:8080", {
