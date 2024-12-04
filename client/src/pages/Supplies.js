@@ -19,7 +19,6 @@ export default function Supplies() {
             const response = await fetch("http://localhost:8080/get_all_requests")
 
             let all_requests_data = await response.json();
-            console.log("frontend all req: ", all_requests_data);
             all_requests_data = all_requests_data.reverse()
             setAllRequests(all_requests_data)
         } catch (error) {
@@ -55,7 +54,7 @@ export default function Supplies() {
                 .then((data) => {
                     console.log("Fulfill Req response:", data);
                     if (data.status === "success") {
-                        alert("Success! Refresh to view change.")
+                        alert("Successfully added your contribution!")
                         navigate('/supplies', { state: { email: clientinfo.email, clientinfo: clientinfo } })
                     } else {
                         alert("Fulfill Request failed")
@@ -70,8 +69,9 @@ export default function Supplies() {
 
     // Anything in the useEffect function will ONLY be called when the component is first loaded (otherwise it will continuously call get_request_data())
     useEffect(() => {
-        get_request_data()
-    }, [])
+        console.log("Using effect");
+        get_request_data();
+    }, [fulfillData])
 
     const handleNavButtonSubmit = (pathname) => {
         console.log("NAVIGATING");
@@ -84,10 +84,11 @@ export default function Supplies() {
             {/* <h1>This is the Supplies Page</h1> */}
 
             <div class="home-bar">
-                {clientinfo ? <div class="home-welcome">
-                    Welcome, {clientinfo.name}!
-                </div> :
-                    <div class="home-no-login">Login to fulfill supply requests.</div>
+                {!clientinfo
+                    ? <div class="home-no-login">Login to fulfill supply requests.</div>
+                    : <div class="home-welcome">
+                        Welcome, {clientinfo.name}!
+                    </div>
                 }
             </div>
 
