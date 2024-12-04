@@ -21,7 +21,7 @@ export default function Header({ email, clientinfo }) {
 
                 <ul class="rightSide">
                     <li>
-                        <a class="navButton" onClick={() => handleNavButtonSubmit('/map')}>HOME</a>
+                        <a class="navButton" onClick={() => handleNavButtonSubmit('/home')}>HOME</a>
                     </li>
                     <li>
                         <a class="navButton" onClick={() => handleNavButtonSubmit('/map')}>MAP</a>
