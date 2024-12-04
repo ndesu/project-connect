@@ -19,7 +19,7 @@ from db.models import events_table, maps_table, post_table, user_table
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "USERNAME"
+DB_USERNAME = "xenamaldonado"
 DB_PASSWORD = "PASSWORD"
 
 # ---------- CONNECT TO SERVER ----------
