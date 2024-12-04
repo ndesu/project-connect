@@ -98,9 +98,7 @@ export default function Home() {
             <div class="home-bar">
                 {clientinfo ? <div class="home-welcome">
                     Welcome, {clientinfo.name}!
-                    <li>
-                        <a onClick={() => handleNavButtonSubmit('/newpost')}>Create New Post</a>
-                    </li>
+                    <a class="create-post-btn" onClick={() => handleNavButtonSubmit('/newpost')}>Create New Post</a>
                 </div> :
                     <div class="home-no-login">Login to create posts and comments!</div>
                 }

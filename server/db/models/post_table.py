@@ -93,7 +93,7 @@ def create_new_comment(conn, postid, userid, commenttext):
     cur.close()
 
 
-def create_new_post(conn, postimage, posttext, clientid, clienttype):
+def create_new_post(conn, imgname, posttext, clientid, clienttype):
     cur = conn.cursor()
 
     current_time = datetime.datetime.now()
@@ -101,7 +101,7 @@ def create_new_post(conn, postimage, posttext, clientid, clienttype):
     if clienttype == "user":
         cur.execute(
             """INSERT INTO posts (userid, postimage, timeofpost, posttext) VALUES (%s, %s, %s, %s)""",
-            (clientid, postimage, current_time, posttext),
+            (clientid, imgname, current_time, posttext),
         )
 
     conn.commit()

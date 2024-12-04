@@ -1,4 +1,6 @@
+import base64
 import json
+import os
 import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from mimetypes import guess_type
@@ -17,8 +19,8 @@ from db.models import maps_table, post_table, user_table
 
 hostName = "localhost"
 serverPort = 8080
-DB_USERNAME = "adriaorenstein"
-DB_PASSWORD = "pg-adria"
+DB_USERNAME = "USERNAME"
+DB_PASSWORD = "PASSWORD"
 
 # ---------- CONNECT TO SERVER ----------
 
@@ -107,125 +109,138 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         try:
             data = json.loads(post_data)
-            print("Received data:", data)
 
-            if data["type"] == "createUserAccount":
-                user_table.create_new_user(
-                    conn,
-                    data["email"],
-                    data["password"],
-                    data["fullName"],
-                    data["city"] + ", " + data["state"],
-                )
-
-                client_info = user_table.get_client(conn, data["email"])
-
-                self.send_response(200)
-                self.send_header("Content-type", "application/json")
-                self.end_headers()
-                response = {
-                    "message": "Data received successfully!",
-                    "status": "success",
-                    "clientinfo": client_info,
-                }
-                self.wfile.write(bytes(json.dumps(response), "utf-8"))
-            elif data["type"] == "createOrgAccount":
-                user_table.create_new_org(
-                    conn,
-                    data["email"],
-                    data["password"],
-                    data["orgName"],
-                    data["description"],
-                    data["phoneNumber"],
-                    data["city"] + ", " + data["state"],
-                )
-
-                client_info = user_table.get_client(conn, data["email"])
-
-                self.send_response(200)
-                self.send_header("Content-type", "application/json")
-                self.end_headers()
-                response = {
-                    "message": "Data received successfully!",
-                    "status": "success",
-                    "clientinfo": client_info,
-                }
-                self.wfile.write(bytes(json.dumps(response), "utf-8"))
-            elif data["type"] == "login":
-                if user_table.user_login(conn, data["email"], data["password"]):
-                    client_info = user_table.get_client(conn, data["email"])
-                    self.send_response(200)
-                    self.send_header("Content-type", "application/json")
-                    self.end_headers()
-                    response = {
-                        "message": "Login successful",
-                        "status": "success",
-                        "clientinfo": client_info,
-                    }
-                    self.wfile.write(bytes(json.dumps(response), "utf-8"))
-                else:
-                    self.send_response(401)
-                    self.send_header("Content-type", "application/json")
-                    self.end_headers()
-                    self.wfile.write(
-                        b'{"error": "Invalid credentials", "status": "failure"}'
-                    )
-            elif data["type"] == "getMapCenter":
-                response = maps_table.get_user_location(conn, data["email"])
-                print(response)
-                self.send_response(200)
-                self.send_header("Content-type", "application/json")
-                self.end_headers()
-                self.wfile.write(bytes(json.dumps(response), "utf-8"))
-            elif data["type"] == "createComment":
-                print("Data from comment: ", data)
-                post_table.create_new_comment(
-                    conn, data["postid"], data["userid"], data["commenttext"]
-                )
-                self.send_response(200)
-                self.send_header("Content-type", "application/json")
-                self.end_headers()
-                response = {
-                    "message": "Comment created successfully",
-                    "status": "success",
-                }
-                self.wfile.write(bytes(json.dumps(response), "utf-8"))
-            elif data["type"] == "createPost":
-                print("Data from upload img: ", data)
-                isFormDataEmpty = True
-                for p in data["imgdata"]:
-                    isFormDataEmpty = False
-                    break
-                print("is empty: ", isFormDataEmpty)
-
-                post_table.create_new_post(
-                    conn,
-                    data["postimage"],
-                    data["posttext"],
-                    data["clientid"],
-                    data["clienttype"],
-                )
-                self.send_response(200)
-                self.send_header("Content-type", "application/json")
-                self.end_headers()
-                response = {
-                    "message": "Post created successfully",
-                    "status": "success",
-                }
-                self.wfile.write(bytes(json.dumps(response), "utf-8"))
-            elif data["type"] == "uploadImage":
-                print("Data from upload img: ", data["img_data"])
-                isFormDataEmpty = True
-                for p in data["img_data"]:
-                    isFormDataEmpty = False
-                    break
-                print("is empty: ", isFormDataEmpty)
-
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as e:
+            print("Json decode error: ", e)
             self.send_response(400)
             self.send_header("Content-type", "application/json")
             self.end_headers()
             response = {"error": "Invalid JSON"}
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+        if data["type"] == "createUserAccount":
+            user_table.create_new_user(
+                conn,
+                data["email"],
+                data["password"],
+                data["fullName"],
+                data["city"] + ", " + data["state"],
+            )
+
+            client_info = user_table.get_client(conn, data["email"])
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            response = {
+                "message": "Data received successfully!",
+                "status": "success",
+                "clientinfo": client_info,
+            }
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+        elif data["type"] == "createOrgAccount":
+            user_table.create_new_org(
+                conn,
+                data["email"],
+                data["password"],
+                data["orgName"],
+                data["description"],
+                data["phoneNumber"],
+                data["city"] + ", " + data["state"],
+            )
+
+            client_info = user_table.get_client(conn, data["email"])
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            response = {
+                "message": "Data received successfully!",
+                "status": "success",
+                "clientinfo": client_info,
+            }
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+        elif data["type"] == "login":
+            if user_table.user_login(conn, data["email"], data["password"]):
+                client_info = user_table.get_client(conn, data["email"])
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                response = {
+                    "message": "Login successful",
+                    "status": "success",
+                    "clientinfo": client_info,
+                }
+                self.wfile.write(bytes(json.dumps(response), "utf-8"))
+            else:
+                self.send_response(401)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(
+                    b'{"error": "Invalid credentials", "status": "failure"}'
+                )
+        elif data["type"] == "getMapCenter":
+            response = maps_table.get_user_location(conn, data["email"])
+            print(response)
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+        elif data["type"] == "createComment":
+            print("Data from comment: ", data)
+            post_table.create_new_comment(
+                conn, data["postid"], data["userid"], data["commenttext"]
+            )
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            response = {
+                "message": "Comment created successfully",
+                "status": "success",
+            }
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+        elif data["type"] == "createNewPost":
+
+            dir_path = "%s/public/assets/user_images/%s" % (
+                os.getcwd(),
+                str(data["clientid"]),
+            )
+            if not (os.path.exists(dir_path) and os.path.isdir(dir_path)):
+                os.mkdir(dir_path)
+
+            file_path = "%s/public/assets/user_images/%s/%s" % (
+                os.getcwd(),
+                str(data["clientid"]),
+                data["imgname"],
+            )
+
+            with open(file_path, "wb") as f:
+                f.write(base64.b64decode(data["imgdata"]))
+            post_table.create_new_post(
+                conn,
+                data["imgname"],
+                data["posttext"],
+                data["clientid"],
+                data["clienttype"],
+            )
+
+            # self.send_response(200)
+            # self.send_header("Content-type", "application/json")
+            # self.end_headers()
+            # response = {
+            #     "message": "Post created successfully",
+            #     "status": "success",
+            # }
+            # self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            response = {
+                "message": "Post created successfully",
+                "status": "success",
+            }
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
 
 

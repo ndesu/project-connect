@@ -232,6 +232,17 @@ h1 {
     font-style: italic;
 }
 
+.create-post-btn {
+    text-decoration-line: none;
+    background-color: #6f7260;
+    color: white;
+    font-weight: bolder;
+    padding: 15px;
+    border-radius: 20px;
+    margin-left: 40px;
+    cursor: pointer;
+}
+
 .new-img {
     width: 410px;
     height: 410px;

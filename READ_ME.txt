@@ -26,6 +26,7 @@ https://www.psycopg.org/docs/install.html#install-from-source
 Things to fix (if time):
 - View comment after posting without refreshing
 - Page for user posts and page for org posts
+- Orgs can make posts
 - Get timestamp for posts and comments and sort posts by timestamp
 - Create supply request
 

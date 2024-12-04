@@ -49,39 +49,60 @@ export default function NewPost() {
             alert("Enter All Information Before Submitting")
         } else {
             let uploadedFile = imgRef.current.files[0];
-            let newPostData = new FormData();
-            newPostData.append('imgdata', uploadedFile);
-            newPostData.append('posttext', postData['posttext']);
-            newPostData.append('clientid', clientinfo['clientid']);
-            newPostData.append('clienttype', clientinfo['clienttype']);
+            let file_name = uploadedFile.name;
 
-            // formData.append("file", uploadedFile);
-            // console.log("uploaded file: ", uploadedFile, "type: ", typeof (uploadedFile));
-            // let allPostData = postData;
-            // allPostData["clientid"] = clientinfo["clientid"];
-            // allPostData["clienttype"] = clientinfo["clienttype"];
-            // allPostData["imgdata"] = formData;
-            fetch("http://localhost:8080", {
-                method: "POST",
-                body: JSON.stringify({ type: "createPost", ...newPostData })
-            })
-                .then((response) => response.json())
+            uploadedFile.arrayBuffer()
                 .then((data) => {
-                    console.log("Post response:", data);
-                    if (data.status === "success") {
-                        navigate('/home', {
-                            state: {
-                                email: clientinfo.email,
-                                clientinfo: clientinfo
-                            }
-                        })
-                    } else {
-                        alert("Failed to Create Post!")
+                    let u8data = new Uint8Array(data);
+                    let sdata = "";
+                    for (let i = 0; i < u8data.length; i++) {
+                        sdata += String.fromCharCode(u8data[i]);
                     }
-                    setPostData({
-                        posttext: ""
-                    });
+
+                    let newPostData = {
+                        'imgdata': btoa(sdata),
+                        'imgname': file_name,
+                        'posttext': postData['posttext'],
+                        'clientid': clientinfo['clientid'],
+                        'clienttype': clientinfo['clienttype'],
+                        'type': 'createNewPost'
+                    }
+                    return newPostData;
                 })
+                .then((newPostData) => {
+                    fetch("http://localhost:8080", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(newPostData),
+                    })
+                })
+                // .then((response) => response.json())
+                .then(() => {
+                    navigate('/home', {
+                        state: {
+                            email: clientinfo.email,
+                            clientinfo: clientinfo
+                        }
+                    })
+                })
+                // .then((data) => {
+                //     console.log("Post response:", data);
+                //     if (data.status === "success") {
+                //         navigate('/home', {
+                //             state: {
+                //                 email: clientinfo.email,
+                //                 clientinfo: clientinfo
+                //             }
+                //         })
+                //     } else {
+                //         alert("Failed to Create Post!")
+                //     }
+                //     setPostData({
+                //         posttext: ""
+                //     });
+                // })
                 .catch((error) => {
                     console.error("Error during post creation:", error);
                 });
