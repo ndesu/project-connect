@@ -1,7 +1,8 @@
 import datetime
+import urllib.parse
+
 import psycopg2
 import requests
-import urllib.parse
 from db.models import lat_and_lng
 
 
@@ -85,21 +86,31 @@ def fulfillRequest(conn, numdonations, requestid, userid):
     conn.commit()
     cur.close()
 
+
 def create_request(conn, orgID, itemName, quantity, supplyDescription, location):
     cur = conn.cursor()
 
     coords = lat_and_lng.get_lat_and_lng(location)
     lat, lon = coords[0], coords[1]
 
-    cur.execute("""INSERT INTO maplocation (longitude, latitude, orgaddress) 
-                VALUES (%s, %s, %s)""", (lon, lat, location))
-    
-    cur.execute("""SELECT locationid FROM maplocation WHERE longitude=%s and latitude=%s and orgaddress=%s""", (lon, lat, location))
+    cur.execute(
+        """INSERT INTO maplocation (longitude, latitude, orgaddress) 
+                VALUES (%s, %s, %s)""",
+        (lon, lat, location),
+    )
+
+    cur.execute(
+        """SELECT locationid FROM maplocation WHERE longitude=%s and latitude=%s and orgaddress=%s""",
+        (lon, lat, location),
+    )
     locID = cur.fetchone()[0]
 
-    cur.execute("""
+    cur.execute(
+        """
                 INSERT INTO supplyrequest (organizationID, itemName, quantity, supplyDescription, locationID)
-                VALUES (%s, %s, %s, %s, %s)""", (orgID, itemName, quantity, supplyDescription, locID))
-    
+                VALUES (%s, %s, %s, %s, %s)""",
+        (orgID, itemName, quantity, supplyDescription, locID),
+    )
+
     conn.commit()
     cur.close()
