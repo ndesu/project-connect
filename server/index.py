@@ -13,7 +13,7 @@ from db.models import create_and_seed
 sys.path.append("..")
 
 # Import database tables
-from db.models import maps_table, post_table, user_table
+from db.models import events_table, maps_table, post_table, user_table
 
 # Local variables
 
@@ -26,6 +26,8 @@ DB_PASSWORD = "PASSWORD"
 
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
+
+    # gets
     def do_GET(self):
         if self.path.startswith("/static/"):
             static_file_path = self.path[1:]
@@ -49,6 +51,27 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
             self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+        # HERE -> get profile info
+        elif self.path == "/get_all_profile":
+            response = user_table.get_all_profile(conn)
+            print("Profiles:", response)
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
+        # HERE -> get events info
+        elif self.path == "/get_all_events":
+            response = events_table.get_all_events(conn)
+            print("Events:", response)
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(bytes(json.dumps(response), "utf-8"))
+
         elif self.path == "/map":
             locations = maps_table.get_map_locations(conn)
             print(locations)
@@ -103,6 +126,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 # set body to error message
                 self.wfile.write(b"404 - Not Found")
 
+    # posts
     def do_POST(self):
         content_length = int(self.headers["Content-Length"])
         post_data = self.rfile.read(content_length)
