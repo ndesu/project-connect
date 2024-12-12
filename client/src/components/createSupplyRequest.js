@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function CreateSupplyRequest({ orgID }) {
-    const apiKey = ''
+    const apiKey = 'AIzaSyAHfuaC6Xs3ld9E6ref8FKCxulfDaz2RkY'
     const [createRequestData, setCreateRequestData] = useState({
         orgID: orgID,
         itemName: "",
@@ -23,13 +23,13 @@ export default function CreateSupplyRequest({ orgID }) {
 
     const handleFormChange = (e) => {
         const { name, value } = e.target;
-        setCreateRequestData({...createRequestData, [name]: value })
+        setCreateRequestData({ ...createRequestData, [name]: value })
     }
 
     const handleCreateRequestSubmit = (e) => {
         e.preventDefault();
-        
-        if(!checkFields(createRequestData)) {
+
+        if (!checkFields(createRequestData)) {
             alert("Enter All Information Before Submitting")
         } else {
             fetch("http://localhost:8080", {
